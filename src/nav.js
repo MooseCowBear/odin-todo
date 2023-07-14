@@ -1,5 +1,4 @@
 import { orderByDate } from "./order.js";
-import { Todo } from "./todo.js";
 
 //if todo has project and task imported, shouldn't need it here??
 
@@ -28,6 +27,8 @@ export function navComponent(todos, parent) {
     const title = document.createElement('h3'); //h1 and h2 will be in the main content part
     title.textContent = cat;
     projectDiv.appendChild(title);
+
+    //here is where we should sort, then loop the sorted arr
 
     for (const p of projects[cat]) { //THIS WILL PROBABLY CHANGE -- also not in order of date yet
       const projectItem = document.createElement('button');

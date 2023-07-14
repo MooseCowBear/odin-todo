@@ -49,8 +49,6 @@ export const Todo = () => {
   }
 
   const getProjects = () => {
-    //want to get outstanding projects (ordered by lowest deadline)
-    //should this be by category, or just return the projects object?
     return projects;
   };
 
