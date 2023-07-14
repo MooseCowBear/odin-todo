@@ -1,3 +1,6 @@
+import { Task } from "./task.js";
+import { Project } from "./project.js";
+
 export const Todo = () => {
   const projects = {
     work: [],
@@ -14,11 +17,12 @@ export const Todo = () => {
 
    if (start && end) {
     //filter by what is between - but need to treat each like
-    tasksArr = tasksArr.filter(elem => (elem.date >= start && elem.date <= end));
+    //start will be end of day today, so upcoming won't include curr day...
+    tasksArr = tasksArr.filter(elem => (elem.getDate() > start && elem.getDate() <= end));
    }
    else if (start) {
     //filter by just start, which will be today
-    tasksArr = tasksArr.filter(elem => elem.date.toDateString() === start.toDateString()); 
+    tasksArr = tasksArr.filter(elem => elem.getDate().toDateString() === start.toDateString()); 
    }
 
    tasksArr = _filterTasks(tasksArr, complete); 
@@ -75,31 +79,4 @@ export const Todo = () => {
     addProject,
     removeProject
   }
-}
-
-//this will probably be used by the view controllers so will move
-function orderByDate(objectsWithDate) {
-  //this should work for both tasks and projects, which is what we want...
-  objectsWithDate.sort( function(a, b) {
-    if (a.date && b.date) {
-      if (a.date > b.date) {
-        return 1;
-      }
-      else if (a.date < b.date) {
-        return -1;
-      }
-      else {
-        return 0;
-      }
-    }
-    else if (a.date) {
-      return 1;
-    }
-    else if (b.date) {
-      return -1;
-    }
-    else {
-      return 0;
-    }
-  })
 }

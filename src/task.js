@@ -1,6 +1,8 @@
 export const Task = (description, category = "misc", priority = 0, date = null, timeSpecified = false) => {
   let completed = false;
 
+  //want if time specified to set the date to the end of the day, and same for project
+
   const getDescription = () => {
     return description;
   };
