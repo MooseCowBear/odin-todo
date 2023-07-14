@@ -1,6 +1,5 @@
 export const Project = (title, description, category, deadlineDate = null, deadlineTime = null) => {
-  let completed = false;
-  const tasks = [];
+  const tasks = { misc: [] };
 
   const getTitle = () => {
     return title;
@@ -38,20 +37,18 @@ export const Project = (title, description, category, deadlineDate = null, deadl
     deadlineTime = newTime;
   };
 
-  const getStatus = () => {
-    return completed;
+  const addTask = (task, taskCategory) => {
+    if (taskCategory in tasks) {
+      tasks[taskCategory].push(task);
+    }
+    else {
+      tasks[taskCategory] = [];
+      tasks[taskCategory].push(task);
+    }
   };
 
-  const updateStatus = () => {
-    completed = !completed;
-  };
-
-  const addTask = (task) => {
-    tasks.push(task);
-  };
-
-  const getTasks = () => {
-    return tasks;
+  const getTasksByCategory = (cat) => {
+    return tasks[cat];
   };
 
   const removeTask = (index) => {
@@ -68,10 +65,8 @@ export const Project = (title, description, category, deadlineDate = null, deadl
     setDeadlineDate,
     getDeadlineTime,
     setDeadlineTime, 
-    getStatus,
-    updateStatus,
     addTask,
-    getTasks,
+    getTasksByCategory,
     removeTask
   };
 };
