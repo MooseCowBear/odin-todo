@@ -1,4 +1,4 @@
-export const Project = (title, description, category, date = null) => {
+export const Project = (title, description, category, date = null, timeSpecified = false) => {
   const tasks = { misc: [] };
 
   const getTitle = () => {
@@ -58,6 +58,10 @@ export const Project = (title, description, category, date = null) => {
     return true;
   };
 
+  const hasTime = () => {
+    return timeSpecified;
+  };
+
   return {
     getTitle,
     setTitle,
@@ -69,6 +73,7 @@ export const Project = (title, description, category, date = null) => {
     addTask,
     getTasksByCategory,
     removeTask, 
-    complete
+    complete,
+    hasTime
   };
 };

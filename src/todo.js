@@ -4,8 +4,8 @@ export const Todo = () => {
     life: []
   }
 
-  const getTasks = (start = null, end = null) => {
-    /*need to get uncompleted, (ordered by lowest datetime first)
+  const getTasks = (complete = false, start = null, end = null) => {
+    /*need to get uncompleted?
      1. tasks for today (particular date)
      2. tasks for upcoming (range of dates)
      3. all tasks (with ones that have no dates/times) being last
@@ -18,8 +18,11 @@ export const Todo = () => {
    }
    else if (start) {
     //filter by just start, which will be today
-    tasksArr = tasksArr.filter(elem => elem.date.getTime() === start.getTime()); 
+    tasksArr = tasksArr.filter(elem => elem.date.toDateString() === start.toDateString()); 
    }
+
+   tasksArr = _filterTasks(tasksArr, complete); 
+
    return tasksArr;
   };
 
@@ -29,6 +32,16 @@ export const Todo = () => {
       tasksArr = tasksArr.concat(projects[cat]);
     }
     return tasksArr; //won't be in order even if had been
+  }
+
+  const _filterTasks = (arr, complete) => {
+    if (complete) {
+      arr = arr.filter(elem => elem.complete());
+    }
+    else {
+      arr = arr.filter(elem => !elem.complete());
+    }
+    return arr;
   }
 
   const getProjects = () => {

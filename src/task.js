@@ -1,4 +1,4 @@
-export const Task = (description, category = "misc", priority = 0, date = null) => {
+export const Task = (description, category = "misc", priority = 0, date = null, timeSpecified = false) => {
   let completed = false;
 
   const getDescription = () => {
@@ -41,6 +41,10 @@ export const Task = (description, category = "misc", priority = 0, date = null) 
     completed = !completed;
   };
 
+  const hasTime = () => {
+    return timeSpecified;
+  };
+
   return {
     getDescription,
     setDescription,
@@ -51,6 +55,7 @@ export const Task = (description, category = "misc", priority = 0, date = null) 
     getDate,
     setDate,
     complete,
-    updateStatus
+    updateStatus,
+    hasTime
   };
 };
