@@ -1,4 +1,4 @@
-export const Project = (title, description, category, deadlineDate = null, deadlineTime = null) => {
+export const Project = (title, description, category, date = null) => {
   const tasks = { misc: [] };
 
   const getTitle = () => {
@@ -21,20 +21,12 @@ export const Project = (title, description, category, deadlineDate = null, deadl
     return category;
   };
 
-  const getDeadlineDate = () => {
-    return deadlineDate;
+  const getDate = () => {
+    return date;
   };
 
-  const setDeadlineDate = (newDate) => {
-    deadlineDate = newDate;
-  };
-
-  const getDeadlineTime = () => {
-    return deadlineTime;
-  };
-
-  const setDeadlineTime = (newTime) => {
-    deadlineTime = newTime;
+  const setDate = (newDate) => {
+    date = newDate;
   };
 
   const addTask = (task, taskCategory) => {
@@ -55,18 +47,28 @@ export const Project = (title, description, category, deadlineDate = null, deadl
     tasks.splice(index, 1);
   };
 
+  const complete = () => {
+    for (const cat in tasks) {
+      for (const task of tasks[cat]) {
+        if (!task.complete()) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
   return {
     getTitle,
     setTitle,
     getDescription,
     setDescription,
     getCategory,
-    getDeadlineDate,
-    setDeadlineDate,
-    getDeadlineTime,
-    setDeadlineTime, 
+    getDate,
+    setDate, 
     addTask,
     getTasksByCategory,
-    removeTask
+    removeTask, 
+    complete
   };
 };

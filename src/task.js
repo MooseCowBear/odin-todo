@@ -1,4 +1,4 @@
-export const Task = (description, category = "misc", priority = 0, date = null, time = null) => {
+export const Task = (description, category = "misc", priority = 0, date = null) => {
   let completed = false;
 
   const getDescription = () => {
@@ -33,15 +33,7 @@ export const Task = (description, category = "misc", priority = 0, date = null, 
     date = newDate;
   };
 
-  const getTime = () => {
-    return time;
-  };
-
-  const setTime = (newTime) => {
-    time = newTime;
-  };
-
-  const getStatus = () => {
+  const complete = () => {
     return completed;
   };
 
@@ -58,9 +50,7 @@ export const Task = (description, category = "misc", priority = 0, date = null, 
     setPriority,
     getDate,
     setDate,
-    getTime,
-    setTime,
-    getStatus,
+    complete,
     updateStatus
   };
 };
