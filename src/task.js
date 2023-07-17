@@ -1,7 +1,10 @@
-export const Task = (description, category = "misc", priority = 0, date = null, timeSpecified = false) => {
-  let completed = false;
+import { Schedulable } from "./schedulable.js";
 
-  //want if time specified to set the date to the end of the day, and same for project
+export const Task = (description, projectTitle, priority, date, time, category = "misc") => {
+  //need to inherit from schedulable
+  const schedulable = Schedulable(date, time);
+
+  let completed = false;
 
   const getDescription = () => {
     return description;
@@ -9,6 +12,10 @@ export const Task = (description, category = "misc", priority = 0, date = null, 
   
   const setDescription = (newDescription) => {
     description = newDescription;
+  };
+
+  const getProject = () => {
+    return projectTitle;
   };
 
   const getCategory = () => {
@@ -27,14 +34,6 @@ export const Task = (description, category = "misc", priority = 0, date = null, 
     priority = newPriority;
   };
 
-  const getDate = () => {
-    return date;
-  };
-
-  const setDate = (newDate) => {
-    date = newDate;
-  };
-
   const complete = () => {
     return completed;
   };
@@ -43,21 +42,16 @@ export const Task = (description, category = "misc", priority = 0, date = null, 
     completed = !completed;
   };
 
-  const hasTime = () => {
-    return timeSpecified;
-  };
-
   return {
+    ...schedulable,
     getDescription,
     setDescription,
+    getProject,
     getCategory,
     setCategory,
     getPriority,
     setPriority,
-    getDate,
-    setDate,
     complete,
-    updateStatus,
-    hasTime
+    updateStatus
   };
 };
