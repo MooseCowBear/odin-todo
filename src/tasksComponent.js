@@ -90,12 +90,12 @@ function addTaskItem(task, includeDate = false) {
 
   const time = document.createElement('div');
   const timeContent = document.createElement('span');
-  timeContent.textContent = timeDisplay(task); 
+  timeContent.textContent = task.timeFormatted(); 
   time.appendChild(timeContent);
 
   if (includeDate) {
     const dateContent = document.createElement('span');
-    dateContent = dateDisplay(task.getDate());
+    dateContent = task.dateFormatted();
     time.appendChild(dateContent);
   }
 
@@ -124,18 +124,4 @@ function getDivTitle(date) {
   else {
     return date.toDateString();
   }
-}
-
-function timeDisplay(task) {
-  if (task.hasTime()) {
-    task.getDate().toLocaleTimeString(); //not quite how we want it...
-  }
-  else {
-    "";
-  }
-}
-
-function dateDisplay(date) {
-  //not sure how i want this yet
-  return date.toDateString();
 }
