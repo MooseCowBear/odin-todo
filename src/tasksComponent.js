@@ -1,9 +1,5 @@
 import { orderByDate } from "./order.js";
-
-//NEED EVENT LISTENERS! want any checkbox becomes checked, then 1. mark that task as completed.
-//(which will require finding the right task...)
-//And want to make that task to not be in view anymore...
-//transition it out somehow, with both opacity and y scale change?
+import { createTaskGroup, createTaskItem } from "./subcomponents.js";
 
 export function tasksComponent(tasks, parent) {
   //reset parent to be empty, then draw this component
@@ -24,7 +20,7 @@ export function tasksComponent(tasks, parent) {
   let currDiv = createTaskGroup(getDivTitle(currDate));
 
   for (const t of sortedTasks) {
-    const taskItem = addTaskItem(t); //don't want the date, since grouped by date
+    const taskItem = createTaskItem(t); //don't want the date, since grouped by date
 
     if (sameDay(t.getDate(), currDate)) {
       //append to the current div
@@ -47,67 +43,6 @@ export function tasksComponent(tasks, parent) {
   parent.appendChild(component);
 }
 
-//both of these will be reused by projects component... so will need separate file
-//makes set div title unnec
-function createTaskGroup(groupTitle) {
-  const groupDiv = document.createElement('div');
-  const title = document.createElement('h2');
-  title.textContent = groupTitle;
-  groupDiv.appendChild(title);
-
-  return groupDiv;
-}
-
-function addTaskItem(task, includeDate = false) {
-  const itemDiv = document.createElement('div');
-  itemDiv.classList.add('item');
-  const lbl = document.createElement('label');
-  const check = document.createElement('input');
-  check.type = 'checkbox'; 
-
-  if (task.completed) {
-    check.checked = true;
-  }
-
-  lbl.appendChild(check);
-
-  const labelContent = document.createElement('span');
-  const description = document.createElement('span');
-  const projectTitle = document.createElement('span');
-
-  description.textContent = task.getDescription();
-  projectTitle.textContent = task.getProject();
-  projectTitle.classList.add('project-title');
-
-  labelContent.appendChild(description);
-  labelContent.appendChild(projectTitle);
-
-  lbl.appendChild(labelContent);
-
-  itemDiv.appendChild(lbl);
-
-  if (task.getPriority() === 'high') {
-    const priorty = document.createElement('p'); //change to icon
-    priorty.textContent = "!";
-    itemDiv.appendChild(priorty);
-  }
-
-  const time = document.createElement('div');
-  const timeContent = document.createElement('span');
-  timeContent.textContent = task.timeFormatted(); 
-  time.appendChild(timeContent);
-
-  if (includeDate) {
-    const dateContent = document.createElement('span');
-    dateContent = task.dateFormatted();
-    time.appendChild(dateContent);
-  }
-
-  itemDiv.appendChild(time);
-  return itemDiv;
-}
-
-//THESE WILL MOVE... at least some will be reused to projects component...
 function sameDay(one, two) {
   return one.getDate() === two.getDate() && 
     one.getMonth() === two.getMonth() &&
