@@ -1,4 +1,4 @@
-const Schedulable = (date, time) => {
+export const Schedulable = (date, time) => {
   const getDate = () => {
     if (date === "") return null;
     const timeString = time === "" ? "T23:59:59" : "T" + time + ":00";
