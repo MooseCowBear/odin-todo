@@ -6,7 +6,7 @@ export function projectComponent(project, parent) {
 
   const component = document.createElement('div');
   const title = document.createElement('h1');
-  title.textContent = "Project";
+  title.textContent = project.getTitle();
   component.appendChild(title);
 
   const projectDiv = document.createElement('div');
@@ -26,4 +26,6 @@ export function projectComponent(project, parent) {
     }
     projectDiv.appendChild(group);
   }
+  component.appendChild(projectDiv);
+  parent.appendChild(component);
 }

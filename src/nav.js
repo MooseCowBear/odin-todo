@@ -1,5 +1,6 @@
 import { orderByDate } from "./order.js";
 import { tasksComponent } from "./tasksComponent.js";
+import { projectComponent } from "./projectComponent.js";
 
 //need to add event listeners! becaause each component is going to have actions... 
 //going to need to add them in the component
@@ -17,7 +18,7 @@ export function navComponent(todos, parent) {
     tasksDiv.appendChild(btn);
   }
 
-  addTaskListener(tasksDiv, parent, todos);
+  addTaskListener(tasksDiv, todos);
   component.appendChild(tasksDiv);
 
   const projectsDiv = document.createElement('div');
@@ -40,8 +41,8 @@ export function navComponent(todos, parent) {
     }
     projectsDiv.appendChild(projectDiv);
   }
-  
-  addProjectListener(projectsDiv);
+
+  addProjectListener(projectsDiv, todos);
   component.appendChild(projectsDiv);
 
   //draws each category of project, with projects from that category listed (in order of date)
@@ -58,27 +59,24 @@ function getTaskComponentArgs(choice) { //maybe taskcomponent should do this?
   return args[choice];
 }
 
-function addTaskListener(buttonDiv, parent, todos) {
+function addTaskListener(buttonDiv, todos) {
   buttonDiv.addEventListener("click", (e) => {
     if (e.target.tagName.toLowerCase() === 'button') {
+      const content = document.getElementById('content');
       const args = getTaskComponentArgs(e.target.textContent.toLowerCase());
       const tasks = todos.getTasks(...args);
-      tasksComponent(tasks, parent);
+      tasksComponent(tasks, content);
     }
   });
 }
 
-function getProjectComponentArg(choice, category, todos) {
-  todos.findProject(choice, category);
-}
-
-function addProjectListener(buttonDiv, parent, todos) {
-  buttonDiv.addButtonListener("click", (e) => {
+function addProjectListener(buttonDiv, todos) {
+  buttonDiv.addEventListener("click", (e) => {
     if (e.target.tagName.toLowerCase() === 'button') {
-      const cat = e.target.parent.querySelector('h3').textContent;
-      const arg = getProjectComponentArg(e.target.textContent, cat);
-      const project = todos.findProject(arg, cat);
-      projectComponent(project, parent);
+      const content = document.getElementById('content');
+      const cat = e.target.parentNode.querySelector('h3').textContent;
+      const project = todos.findProject(e.target.textContent, cat);
+      projectComponent(project, content);
     }
   });
 }

@@ -7,15 +7,15 @@ export const Todo = () => {
     life: []
   }
 
-  const getTasks = (today, future, complete) => {
+  const getTasks = (wantToday, wantUpcoming, complete) => {
    let tasksArr = _getAllTasks();
    let today = new Date(); //want start of day
    today.setHours(0,0,0,0); 
 
-   if (future) {
+   if (wantUpcoming) {
     tasksArr = tasksArr.filter(elem => (elem.getDate() !== null && elem.getDate() >= today));
    }
-   else if (today) {
+   else if (wantToday) {
     tasksArr = tasksArr.filter(elem => elem.getDate() !== null && elem.getDate().toDateString() === today.toDateString()); 
    }
 
@@ -27,7 +27,12 @@ export const Todo = () => {
   const _getAllTasks = () => {
     let tasksArr = [];
     for (const cat in projects) {
-      tasksArr = tasksArr.concat(projects[cat]);
+      for (const p of projects[cat]) {
+        const projectTasks = p.getTasks();
+        for (const taskCat in projectTasks) {
+          tasksArr = tasksArr.concat(projectTasks[taskCat]);
+        }
+      }
     }
     return tasksArr; //won't be in order even if had been
   }
@@ -66,7 +71,7 @@ export const Todo = () => {
   };
 
   const findProject = (name, category) => {
-    const p = projects[category].filter(p => p.title.toLowercase() === name.toLowercase());
+    const p = projects[category].filter(elem => elem.getTitle() === name);
     return p[0];
   };
 

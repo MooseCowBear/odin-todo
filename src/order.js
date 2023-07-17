@@ -1,6 +1,6 @@
 export function orderByDate(objectsWithDate) {
   //this should work for both tasks and projects, which is what we want...
-  objectsWithDate.sort( function(a, b) {
+  return objectsWithDate.sort( function(a, b) {
     if (a.getDate() && b.getDate()) {
       if (a.getDate() > b.getDate()) {
         return 1;
@@ -21,5 +21,5 @@ export function orderByDate(objectsWithDate) {
     else {
       return 0;
     }
-  })
+  });
 }

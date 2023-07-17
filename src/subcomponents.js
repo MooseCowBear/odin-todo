@@ -49,7 +49,7 @@ export function createTaskItem(task, includeDate = false) {
 
   if (includeDate) {
     const dateContent = document.createElement('span');
-    dateContent = task.dateFormatted();
+    dateContent.textContent = task.dateFormatted();
     time.appendChild(dateContent);
   }
 

@@ -14,6 +14,14 @@ export function tasksComponent(tasks, parent) {
 
   component.appendChild(title);
 
+  if (sortedTasks.length === 0) {
+    const message = document.createElement('p');
+    message.textContent = "No tasks";
+    component.appendChild(message);
+    parent.appendChild(component);
+    return;
+  }
+
   const tasksDiv = document.createElement('div');
 
   let currDate = sortedTasks[0].getDate();
