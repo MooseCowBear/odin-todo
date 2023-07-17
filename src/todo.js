@@ -7,22 +7,16 @@ export const Todo = () => {
     life: []
   }
 
-  const getTasks = (complete = false, start = null, end = null) => {
-    /*need to get uncompleted?
-     1. tasks for today (particular date)
-     2. tasks for upcoming (range of dates)
-     3. all tasks (with ones that have no dates/times) being last
-    */
+  const getTasks = (today, future, complete) => {
    let tasksArr = _getAllTasks();
+   let today = new Date(); //want start of day
+   today.setHours(0,0,0,0); 
 
-   if (start && end) {
-    //filter by what is between - but need to treat each like
-    //start will be end of day today, so upcoming won't include curr day...
-    tasksArr = tasksArr.filter(elem => (elem.getDate() > start && elem.getDate() <= end));
+   if (future) {
+    tasksArr = tasksArr.filter(elem => (elem.getDate() !== null && elem.getDate() >= today));
    }
-   else if (start) {
-    //filter by just start, which will be today
-    tasksArr = tasksArr.filter(elem => elem.getDate().toDateString() === start.toDateString()); 
+   else if (today) {
+    tasksArr = tasksArr.filter(elem => elem.getDate() !== null && elem.getDate().toDateString() === today.toDateString()); 
    }
 
    tasksArr = _filterTasks(tasksArr, complete); 
@@ -71,10 +65,18 @@ export const Todo = () => {
     }
   };
 
+  const findProject = (name, category) => {
+    const p = projects[category].filter(p => p.title.toLowercase() === name.toLowercase());
+    return p[0];
+  };
+
   return {
     getTasks,
     getProjects,
     addProject,
-    removeProject
+    removeProject,
+    findProject
   }
 }
+
+//need a find project method
