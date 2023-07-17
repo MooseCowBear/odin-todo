@@ -4,7 +4,11 @@ import { orderByDate } from "./order.js";
 //(which will require finding the right task...)
 //And want to make that task to not be in view anymore...
 //transition it out somehow, with both opacity and y scale change?
+
 export function tasksComponent(tasks, parent) {
+  //reset parent to be empty, then draw this component
+  parent.textContent = "";
+
   const sortedTasks = orderByDate(tasks);
 
   const component = document.createElement('div');
