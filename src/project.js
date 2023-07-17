@@ -39,6 +39,10 @@ export const Project = (title, description, date, time, category) => {
     return tasks[cat];
   };
 
+  const getTasks = () => {
+    return tasks;
+  };
+
   const removeTask = (index) => {
     tasks.splice(index, 1);
   };
@@ -63,6 +67,7 @@ export const Project = (title, description, date, time, category) => {
     getCategory,
     addTask,
     getTasksByCategory,
+    getTasks,
     removeTask, 
     complete
   };
