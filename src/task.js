@@ -47,6 +47,7 @@ export const Task = (id, description, projectId, priority, date, time, category 
 
   return {
     ...schedulable,
+    getId,
     getDescription,
     setDescription,
     getProjectId,

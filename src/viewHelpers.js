@@ -23,3 +23,8 @@ export function orderByDate(objectsWithDate) {
     }
   });
 }
+
+export function getCategories(arr) {
+  const categories = arr.map(elem => elem.getCategory());
+  return [...new Set(categories)].sort();
+}

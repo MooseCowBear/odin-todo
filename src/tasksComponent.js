@@ -1,4 +1,4 @@
-import { orderByDate } from "./order.js";
+import { orderByDate } from "./viewHelpers.js";
 import { createTaskGroup, createTaskItem } from "./subcomponents.js";
 
 export function tasksComponent(tasks, parent) {
