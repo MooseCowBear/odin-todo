@@ -1,4 +1,8 @@
-export const Project = (title, description, category, date = null, timeSpecified = false) => {
+import { Schedulable } from "./schedulable.js";
+
+export const Project = (title, description, date, time, category) => {
+  const schedulable = Schedulable(date, time);
+
   const tasks = { misc: [] };
 
   const getTitle = () => {
@@ -19,14 +23,6 @@ export const Project = (title, description, category, date = null, timeSpecified
 
   const getCategory = () => {
     return category;
-  };
-
-  const getDate = () => {
-    return date;
-  };
-
-  const setDate = (newDate) => {
-    date = newDate;
   };
 
   const addTask = (task, taskCategory) => {
@@ -58,22 +54,16 @@ export const Project = (title, description, category, date = null, timeSpecified
     return true;
   };
 
-  const hasTime = () => {
-    return timeSpecified;
-  };
-
   return {
+    ...schedulable,
     getTitle,
     setTitle,
     getDescription,
     setDescription,
     getCategory,
-    getDate,
-    setDate, 
     addTask,
     getTasksByCategory,
     removeTask, 
-    complete,
-    hasTime
+    complete
   };
 };
