@@ -18,7 +18,7 @@ export const Schedulable = (date, time) => {
     if (time === "") return time;
     let hour = parseInt(time.slice(0, 2));
     const min = time.slice(2);
-    const m = hour > 12 ? "pm" : "am";
+    const m = hour >= 12 ? "pm" : "am";
     hour = hour > 12 ? hour - 12 : hour;
     return `${hour}${min} ${m}`;
   };
