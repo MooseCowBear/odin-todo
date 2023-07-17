@@ -1,10 +1,13 @@
 import { Schedulable } from "./schedulable.js";
 
-export const Task = (description, projectTitle, priority, date, time, category = "misc") => {
-  //need to inherit from schedulable
+export const Task = (id, description, projectId, priority, date, time, category = "misc") => {
   const schedulable = Schedulable(date, time);
 
   let completed = false;
+
+  const getId = () => {
+    return id;
+  };
 
   const getDescription = () => {
     return description;
@@ -14,8 +17,8 @@ export const Task = (description, projectTitle, priority, date, time, category =
     description = newDescription;
   };
 
-  const getProject = () => {
-    return projectTitle;
+  const getProjectId = () => {
+    return projectId;
   };
 
   const getCategory = () => {
@@ -46,7 +49,7 @@ export const Task = (description, projectTitle, priority, date, time, category =
     ...schedulable,
     getDescription,
     setDescription,
-    getProject,
+    getProjectId,
     getCategory,
     setCategory,
     getPriority,

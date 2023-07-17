@@ -4,7 +4,7 @@ import { Project } from "./project.js";
 import { Todo } from "./todo.js";
 
 
-//some dummy data 
+//some dummy data -NEEDS UPDATING
 const todos = Todo(); 
 
 const p1 = Project("Project One", "some description...", "2023-07-20", "13:00", "work");
