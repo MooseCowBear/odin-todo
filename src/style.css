@@ -259,8 +259,12 @@ select {
 }
 
 .warning {
-  
+  display: none;
   color: var(--alert);
+}
+
+.warning.show {
+  display: inline;
 }
 
 .button-div {
@@ -289,6 +293,14 @@ select {
 
 .nav-button-wrapper {
   display: flex;
-  align-items: center;
-  
+  align-items: center; 
+}
+
+.nav-button-wrapper .icon {
+  transform: translateY(-10%);
+}
+
+.small-icon {
+  height: 1rem;
+  transform: translateY(-10%);
 }

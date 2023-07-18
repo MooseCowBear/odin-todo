@@ -44,7 +44,7 @@ export const Todo = () => {
     tasks = tasks.filter(elem => elem.getId(id) !== id)
   };
 
-  const updateProject = (id, title, description, date, time, category = "uncategorized") => {
+  const updateProject = (id, title, description, date, time, category) => {
     const project = getProjectById(id);
     project.setTitle(title);
     project.setDescription(description);
@@ -53,7 +53,7 @@ export const Todo = () => {
     project.setCategory(category);
   };
 
-  const updateTask = (id, description, priority, date, time, category = "uncategorized") => {
+  const updateTask = (id, description, priority, date, time, category) => {
     const task = getTaskById(id);
     task.setDescription(description);
     task.setPriority(priority);

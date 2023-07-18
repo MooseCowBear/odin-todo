@@ -5,6 +5,7 @@ import List from "./format-list-bulleted.svg";
 import Alarm from "./alarm.svg";
 import Calendar from "./calendar-month.svg";
 import Check from "./check-circle.svg";
+import Circle from "./circle.svg";
 
 export function navComponent(todos, parent) {
   //draws buttons to task views: today, upcoming, anytime, complete
@@ -57,18 +58,25 @@ export function navComponent(todos, parent) {
     const projectDiv = document.createElement('div');
     projectDiv.classList.add('project-div');
 
-    const title = document.createElement('h3'); //h1 and h2 will be in the main content part
+    const title = document.createElement('h3');
     title.textContent = cat;
     projectDiv.appendChild(title);
 
     const sortedProjects = orderByDate(projects.filter(elem => elem.getCategory() === cat));
 
-    for (const p of sortedProjects) { //THIS WILL PROBABLY CHANGE
+    for (const p of sortedProjects) { 
+      const buttonWrapper = document.createElement('div');
+      buttonWrapper.classList.add("nav-button-wrapper");
+      const circleIcon = new Image();
+      circleIcon.src = Circle;
+      circleIcon.classList.add("small-icon");
+      buttonWrapper.appendChild(circleIcon);
       const projectItem = document.createElement('button');
       projectItem.classList.add("project-item");
       projectItem.textContent = p.getTitle();
-      projectDiv.appendChild(projectItem);
       projectItem.dataset.id = `${p.getId()}`;
+      buttonWrapper.appendChild(projectItem);
+      projectDiv.appendChild(buttonWrapper);
     }
     projectsDiv.appendChild(projectDiv);
   }

@@ -80,6 +80,7 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
         document.getElementById('category').value.trim().toLowerCase()
       );
       projectComponent(todos, projectId, parent);
+      navComponent(todos, document.querySelector('header'));
     }
   });
 
@@ -344,7 +345,7 @@ function validateInput(fields) {
   for (const f of fields) {
     const input = f.querySelector('input');
     if (input.value.trim() === "") {
-      const warning = f.querySelector('warning');
+      const warning = f.querySelector('.warning');
       warning.classList.add('show');
       good = false;
     }
