@@ -388,15 +388,11 @@ select:focus + .focus {
     row-gap: 0.3rem;
   }
 
-  .item > * {
-   
-  }
-
   .project-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
     flex-wrap: wrap;
   }
-
 }
