@@ -4,6 +4,7 @@ import { projectComponent } from "./projectComponent.js";
 
 export function navComponent(todos, parent) {
   //draws buttons to task views: today, upcoming, anytime, complete
+  parent.textContent = ""
   const component = document.createElement('nav');
 
   const tasksDiv = document.createElement('div');

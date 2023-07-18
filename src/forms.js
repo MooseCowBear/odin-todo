@@ -1,5 +1,6 @@
 import { projectComponent } from "./projectComponent.js";
 import { tasksComponent } from "./tasksComponent.js";
+import { navComponent } from "./nav.js";
 
 export function projectFormComponent(parent, nodeToReplace, todos, project = null) {
   const component = document.createElement('div');
@@ -33,13 +34,14 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
 
   if (project) {
     const deleteBtn = document.createElement('button');
-    deleteBtn.classList('delete-btn'); //will make this small
+    deleteBtn.classList.add('delete-btn'); //will make this small
     deleteBtn.textContent = 'Delete Project';
     f.appendChild(deleteBtn);
 
     deleteBtn.addEventListener("click", () => {
       todos.deleteProject(project.getId());
-      tasksComponent(todos, "All", parent); //want to go to "home"
+      tasksComponent(todos, "All", parent); //want to go to "home" + also need to redraw nav!
+      navComponent(todos, document.querySelector('header'));
     });
   }
 
