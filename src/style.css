@@ -238,15 +238,22 @@ input[type=checkbox] {
   margin: 1rem 0;
 }
 
-.form button {
+.form button, .edit-project {
   width: max-content;
   text-transform: lowercase;
   border: none;
   background-color: transparent;
 }
 
-.form button:hover, .form button:focus {
+.form button:hover, 
+.form button:focus, 
+.edit-project:hover, 
+.edit-project:focus {
   color: var(--alert);
+}
+
+.edit-project {
+  font-size: 0.9rem;
 }
 
 .label-wrapper {
@@ -375,4 +382,21 @@ select:focus + .focus {
   .new-buttons-div {
     flex-direction: column;
   }
+
+  .item {
+    flex-wrap: wrap;
+    row-gap: 0.3rem;
+  }
+
+  .item > * {
+   
+  }
+
+  .project-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
 }

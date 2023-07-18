@@ -21,7 +21,8 @@ export function projectComponent(todos, projectId, parent) {
 
   const projectEdit = document.createElement('button');
   projectEdit.id = "edit-project";
-  projectEdit.textContent = 'Edit';
+  projectEdit.classList.add("edit-project");
+  projectEdit.textContent = 'Edit'; 
   header.appendChild(projectEdit);
 
   component.appendChild(header);
