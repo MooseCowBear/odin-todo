@@ -1,6 +1,10 @@
 import { orderByDate, getCategories } from "./viewHelpers.js";
 import { tasksComponent } from "./tasksComponent.js";
 import { projectComponent } from "./projectComponent.js";
+import List from "./format-list-bulleted.svg";
+import Alarm from "./alarm.svg";
+import Calendar from "./calendar-month.svg";
+import Check from "./check-circle.svg";
 
 export function navComponent(todos, parent) {
   //draws buttons to task views: today, upcoming, anytime, complete
@@ -14,11 +18,29 @@ export function navComponent(todos, parent) {
   tasksDiv.appendChild(tasksTitle);
 
   const buttons = ['All', 'Today', 'Upcoming', 'Completed'];
+  const all = new Image();
+  all.src = List;
+  all.classList.add("icon");
+  const today = new Image();
+  today.src = Alarm;
+  today.classList.add("icon");
+  const up = new Image();
+  up.src = Calendar;
+  up.classList.add("icon");
+  const comp = new Image();
+  comp.src = Check;
+  comp.classList.add("icon");
 
-  for (const b of buttons) {
+  const icons = [all, today, up, comp];
+
+  for (let i = 0; i < buttons.length; i ++) {
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.classList.add("nav-button-wrapper");
+    buttonWrapper.appendChild(icons[i]);
     const btn = document.createElement('button');
-    btn.textContent = b;
-    tasksDiv.appendChild(btn);
+    btn.textContent = buttons[i];
+    buttonWrapper.appendChild(btn);
+    tasksDiv.appendChild(buttonWrapper);
   }
 
   addTaskListener(tasksDiv, todos);

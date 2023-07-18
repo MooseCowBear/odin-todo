@@ -286,3 +286,9 @@ select {
   padding: 0;
   /*transform: translateY(50%);*/
 }
+
+.nav-button-wrapper {
+  display: flex;
+  align-items: center;
+  
+}
