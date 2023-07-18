@@ -39,7 +39,6 @@ export function tasksComponent(todos, taskSubset, parent) {
   let currDiv = createTaskGroup(getDivTitle(currDate));
 
   for (const t of sortedTasks) {
-    console.log("task is:", t, t.getDescription());
     const taskItem = createTaskItem(todos, t); 
 
     if (sameDay(t.getDateAsDate(), currDate)) {

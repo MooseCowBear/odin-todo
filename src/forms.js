@@ -57,8 +57,6 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
     const validates = validateInput([titleField]);
     if (!validates) return; 
 
-    console.log("title value:", document.getElementById('title'), document.getElementById('title').value);
-
     if (project) {
       todos.updateProject(
         project.getId(), 
@@ -85,15 +83,11 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
   });
 
   cancel.addEventListener("click", () => {
-    console.log("cancel button clicked", nodeToReplace);
     component.replaceWith(nodeToReplace);
   });
 }
 
 export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, projectID, task = null) {
-  console.log("TASK", task);
-  console.log("PROJECT ID", projectID);
-
   const component = document.createElement('div');
   component.id = "form";
   component.classList.add('form');
@@ -147,12 +141,7 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
     buttonsDiv.appendChild(deleteBtn);
 
     deleteBtn.addEventListener("click", () => {
-      console.log(todos.getTasks());
-      console.log("task id to delete", task.getId());
-
       todos.deleteTask(task.getId());
-
-      console.log(todos.getTasks());
 
       if (taskSubset) {
         tasksComponent(todos, taskSubset, parent);
@@ -175,7 +164,6 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
 
     const catInput = document.getElementById('category').value.trim();
     const cat = catInput === "" ? "uncategorized" : catInput;
-    console.log("cat", cat);
 
     if (task) {
       todos.updateTask(
@@ -232,9 +220,7 @@ function createSimpleInput(elem, id, type, labelText, warning) {
   field.id = id;
 
   if (elem) {
-    console.log(`get${id.charAt(0).toUpperCase() + id.slice(1)}`);
     field.value = elem[`get${id.charAt(0).toUpperCase() + id.slice(1)}`]();
-    console.log("field value: ", field.value);
   }
 
   const labelWrapper = document.createElement('div');
@@ -335,7 +321,6 @@ function createTextarea(elem, id, labelText) {
 
   if (elem) {
     field.value = elem[`get${id.charAt(0).toUpperCase() + id.slice(1)}`]();
-    console.log("field value: ", field.value);
   }
 
   const fieldLabel = document.createElement('label');

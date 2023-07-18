@@ -25,7 +25,6 @@ export function orderByDate(objectsWithDate) {
 
 export function getCategories(arr) {
   const categories = arr.map(elem => elem.getCategory());
-  console.log("CATS", [...new Set(categories)].sort());
   return [...new Set(categories)].sort();
 }
 

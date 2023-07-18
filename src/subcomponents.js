@@ -107,7 +107,7 @@ export function addNewFormBtns(parent) {
   const newProject = document.createElement('button');
   newProject.id = "new-project";
   newProject.appendChild(plusIcon1);
-  const pcopy = document.createElement('span');
+  const pcopy = document.createElement('p');
   pcopy.textContent = "New Project";
   newProject.appendChild(pcopy);
 
@@ -119,7 +119,7 @@ export function addNewFormBtns(parent) {
   const newTask = document.createElement('button');
   newTask.id = "new-task"; 
   newTask.appendChild(plusIcon2);
-  const taskcopy = document.createElement('span');
+  const taskcopy = document.createElement('p');
   taskcopy.textContent = "New Task";
   newTask.appendChild(taskcopy);
   

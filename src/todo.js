@@ -29,7 +29,7 @@ export const Todo = () => {
   };
 
   const createTask = (description, projectId, priority, date, time, category = "uncategorized") => {
-    console.log("creating task with id: ", taskIdCounter);
+
     const t = Task(taskIdCounter, description, projectId, priority, date, time, category);
     tasks.push(t);
     taskIdCounter++;
