@@ -81,6 +81,8 @@ export function createTaskItem(todos, task, includeDate = false) {
     itemDiv.appendChild(priorty);
   }
 
+  itemDiv.classList.add(task.getPriority());
+
   return itemDiv;
 }
 
