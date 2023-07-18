@@ -1,3 +1,4 @@
+import { generateTaskItemId } from "./viewHelpers.js";
 
 export function createTaskGroup(groupTitle) {
   const groupDiv = document.createElement('div');
@@ -12,14 +13,22 @@ export function createTaskGroup(groupTitle) {
 export function createTaskItem(task, includeDate = false) {
   const itemDiv = document.createElement('div');
   itemDiv.classList.add('item');
+  itemDiv.id = generateTaskItemId(task.getId());
+
   const lbl = document.createElement('label');
   const check = document.createElement('input');
   check.type = 'checkbox'; 
-  check.dataset.taskId = `${task.getId()}` //to be used in event listener that updates status of task
 
   if (task.completed) {
     check.checked = true;
   }
+
+  check.addEventListener('change', (e) => {
+    task.updateStatus();
+    if (e.target.checked) {
+      //want to fade out...? only if not showing completed tasks...which would require a bool...
+    }
+  });
 
   lbl.appendChild(check);
 

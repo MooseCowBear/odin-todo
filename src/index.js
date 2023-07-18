@@ -1,6 +1,4 @@
 import { navComponent } from "./nav.js";
-import { Task } from "./task.js";
-import { Project } from "./project.js";
 import { Todo } from "./todo.js";
 
 
