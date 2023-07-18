@@ -19,7 +19,7 @@ export function tasksComponent(todos, taskSubset, parent) {
   component.appendChild(newFormDiv); 
 
   addNewFormBtns(parent);
-  addNewButtonListeners(parent, taskSubset, todos, newFormDiv);
+  addButtonListeners(component, parent, todos, taskSubset);
 
   if (tasks.length === 0) {
     const message = document.createElement('p');
@@ -61,16 +61,23 @@ export function tasksComponent(todos, taskSubset, parent) {
   parent.appendChild(component);
 }
 
-function addNewButtonListeners(parent, taskSubset, todos, nodeToReplace) {
-  const newProject = document.getElementById('new-project');
-
-  const newTask = document.getElementById('new-task');
-
-  newProject.addEventListener("click", () => {
-    projectFormComponent(parent, nodeToReplace, todos);
-  });
-
-  newTask.addEventListener("click", () => {
-    taskFormComponent(parent, nodeToReplace, todos, taskSubset, null);
+function addButtonListeners(component, parent, todos, taskSubset) {
+  //for all buttons in the tasksComponent
+  component.addEventListener("click", (e) => {
+    if (e.target.tagName.toLowerCase() === 'button') {
+      if (e.target.id === 'new-project') {
+        const nodeToReplace = document.getElementById('form');
+        projectFormComponent(parent, nodeToReplace, todos);
+      }
+      else if (e.target.id === 'new-task') {
+        const nodeToReplace = document.getElementById('form');
+        taskFormComponent(parent, nodeToReplace, todos, taskSubset, null);
+      }
+      else if (e.target.classList.contains('edit-button')) {
+        const nodeToReplace = document.getElementById(generateTaskItemId(e.target.dataset.taskId));
+        const task = todos.getTaskById(e.target.dataset.taskId);
+        taskFormComponent(parent, nodeToReplace, todos, taskSubset, null, task);
+      }
+    }
   });
 }

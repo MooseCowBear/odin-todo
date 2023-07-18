@@ -9,7 +9,6 @@ export function createTaskGroup(groupTitle) {
   return groupDiv;
 }
 
-//need to add button to edit/delete
 export function createTaskItem(task, includeDate = false) {
   const itemDiv = document.createElement('div');
   itemDiv.classList.add('item');
