@@ -1,9 +1,10 @@
 import { Task } from "./task.js";
 import { Project } from "./project.js";
+import { sameDay } from "./viewHelpers.js";
 
 export const Todo = () => {
-  const projects = [];
-  const tasks = [];
+  let projects = [];
+  let tasks = [];
 
   let projectIdCounter = 1;
   let taskIdCounter = 1;
@@ -28,6 +29,7 @@ export const Todo = () => {
   };
 
   const createTask = (description, projectId, priority, date, time, category = "uncategorized") => {
+    console.log("creating task with id: ", taskIdCounter);
     const t = Task(taskIdCounter, description, projectId, priority, date, time, category);
     tasks.push(t);
     taskIdCounter++;
@@ -39,7 +41,7 @@ export const Todo = () => {
   };
 
   const deleteTask = (id) => {
-    tasks = tasks.filter(elem => elem.getId(id) === id)
+    tasks = tasks.filter(elem => elem.getId(id) !== id)
   };
 
   const updateProject = (id, title, description, date, time, category = "uncategorized") => {
@@ -70,13 +72,13 @@ export const Todo = () => {
 
   const getTodayTasks = () => {
     const today = new Date(); 
-    return tasks.filter(elem => elem.getDate() !== null && elem.getDate().toDateString() === today.toDateString() && !elem.complete()); 
+    return tasks.filter(elem => !elem.complete() && sameDay(elem.getDateAsDate(), today)); 
   };
 
   const getUpcomingTasks = () => {
     const today = new Date(); //want start of day
     today.setHours(0,0,0,0);
-    return tasks.filter(elem => (elem.getDate() !== null && elem.getDate() >= today && !elem.complete()));
+    return tasks.filter(elem => (elem.getDateAsDate() !== null && elem.getDateAsDate() >= today && !elem.complete()));
   };
 
   const getAllTasks = () => {

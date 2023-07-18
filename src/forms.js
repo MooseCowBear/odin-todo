@@ -51,36 +51,42 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
     const validates = validateInput([titleField]);
     if (!validates) return; 
 
+    console.log("title value:", document.getElementById('title'), document.getElementById('title').value);
+
     if (project) {
       todos.updateProject(
         project.getId(), 
-        document.getElementById('title').value.trim.toLowerCase(), 
+        document.getElementById('title').value.trim().toLowerCase(), 
         document.getElementById('description').value, 
         document.getElementById('date').value, 
         document.getElementById('time').value, 
-        document.getElementById('category').value.trim.toLowerCase()
+        document.getElementById('category').value.trim().toLowerCase()
       );
       
       projectComponent(todos, project.getId(), parent);
     }
     else { 
       const projectId = todos.createProject(
-        document.getElementById('title').value.trim.toLowerCase(), 
+        document.getElementById('title').value.trim().toLowerCase(), 
         document.getElementById('description').value, 
         document.getElementById('date').value, 
         document.getElementById('time').value, 
-        document.getElementById('category').value.trim.toLowerCase()
+        document.getElementById('category').value.trim().toLowerCase()
       );
       projectComponent(todos, projectId, parent);
     }
   });
 
   cancel.addEventListener("click", () => {
+    console.log("cancel button clicked", nodeToReplace);
     component.replaceWith(nodeToReplace);
   });
 }
 
 export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, projectID, task = null) {
+  console.log("TASK", task);
+  console.log("PROJECT ID", projectID);
+
   const component = document.createElement('div');
   component.id = "form";
   component.classList.add('form');
@@ -127,12 +133,18 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
 
   if (task) {
     const deleteBtn = document.createElement('button');
-    deleteBtn.classList('delete-btn');
+    deleteBtn.classList.add('delete-btn');
     deleteBtn.textContent = 'Delete Task';
     f.appendChild(deleteBtn);
 
     deleteBtn.addEventListener("click", () => {
+      console.log(todos.getTasks());
+      console.log("task id to delete", task.getId());
+
       todos.deleteTask(task.getId());
+
+      console.log(todos.getTasks());
+
       if (taskSubset) {
         tasksComponent(todos, taskSubset, parent);
       }
@@ -145,13 +157,14 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
   component.appendChild(f);
   nodeToReplace.replaceWith(component);
 
-  submitBtn.addEventListener("click", () => {
+  submitBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const validates = validateInput([description]);
     if (!validates) return; 
 
-    const catInput = document.getElementById('category').value.trim;
+    const catInput = document.getElementById('category').value.trim();
     const cat = catInput === "" ? "uncategorized" : catInput;
+    console.log("cat", cat);
 
     if (task) {
       todos.updateTask(
@@ -172,9 +185,8 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
     }
     else {
       todos.createTask(
-        task.getId(), 
         document.getElementById('description').value, 
-        document.getElementById('project').value,
+        parseInt(document.getElementById('project').value),
         document.getElementById('priority').value,
         document.getElementById('date').value, 
         document.getElementById('time').value, 
@@ -209,6 +221,7 @@ function createSimpleInput(elem, id, type, labelText, warning) {
   field.id = id;
 
   if (elem) {
+    console.log(`get${id.charAt(0).toUpperCase() + id.slice(1)}`);
     field.value = elem[`get${id.charAt(0).toUpperCase() + id.slice(1)}`]();
     console.log("field value: ", field.value);
   }
@@ -217,7 +230,7 @@ function createSimpleInput(elem, id, type, labelText, warning) {
   fieldLabel.textContent = labelText;
   fieldLabel.htmlFor = id;
 
-  const notice = document.createAttribute('p');
+  const notice = document.createElement('p');
   notice.textContent = warning;
   notice.classList.add('warning');
 
@@ -258,7 +271,6 @@ function createProjectSelect(task, options) {
   }
 
   fieldDiv.appendChild(fieldLabel);
-  fieldDiv.appendChild(notice);
   fieldDiv.appendChild(field);
 
   return fieldDiv;
@@ -271,10 +283,14 @@ function createPrioritySelect(task, options) {
   const field = document.createElement('select');
   field.id = "priority";
 
+  const fieldLabel = document.createElement('label');
+  fieldLabel.textContent = "Priority:";
+  fieldLabel.htmlFor = "priority";
+
   for (const opt of options) {
     const selectOption = document.createElement('option');
-    selectOption.value = opt.getId();
-    selectOption.textContent = opt.getTitle();
+    selectOption.value = opt;
+    selectOption.textContent = opt;
     if (task && opt === task.getPriority()) {
       selectOption.selected = true;
     }
@@ -282,7 +298,6 @@ function createPrioritySelect(task, options) {
   }
 
   fieldDiv.appendChild(fieldLabel);
-  fieldDiv.appendChild(notice);
   fieldDiv.appendChild(field);
 
   return fieldDiv;  
@@ -304,7 +319,7 @@ function createTextarea(elem, id, labelText, warning) {
   fieldLabel.textContent = labelText;
   fieldLabel.htmlFor = id;
 
-  const notice = document.createAttribute('p');
+  const notice = document.createElement('p');
   notice.textContent = warning;
   notice.classList.add('warning');
 

@@ -22,7 +22,7 @@ export function navComponent(todos, parent) {
 
   const projects = todos.getProjects();
 
-  for (const cat in getCategories(projects)) {
+  for (const cat of getCategories(projects)) {
     const projectDiv = document.createElement('div');
     const title = document.createElement('h3'); //h1 and h2 will be in the main content part
     title.textContent = cat;
@@ -62,7 +62,7 @@ function addProjectListener(buttonDiv, todos) {
     if (e.target.tagName.toLowerCase() === 'button') {
       const content = document.getElementById('content');
       
-      projectComponent(todos, e.target.dataset.id, content);
+      projectComponent(todos, parseInt(e.target.dataset.id), content);
     }
   });
 }

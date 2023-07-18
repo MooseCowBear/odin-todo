@@ -2,7 +2,6 @@ import { orderByDate, getCategories, generateTaskItemId } from "./viewHelpers.js
 import { createTaskGroup, createTaskItem, addNewFormBtns } from "./subcomponents.js";
 import { projectFormComponent, taskFormComponent } from "./forms.js";
 
-//needs edit option!!
 
 export function projectComponent(todos, projectId, parent) {
   parent.textContent = "";
@@ -17,7 +16,6 @@ export function projectComponent(todos, projectId, parent) {
   component.appendChild(newFormDiv); 
 
   addNewFormBtns(parent);
-  addButtonListeners(component, parent, todos, projectId);
 
   const projectDiv = document.createElement('div');
 
@@ -30,32 +28,38 @@ export function projectComponent(todos, projectId, parent) {
     const sortedTasks = orderByDate(tasks.filter(elem => elem.getCategory() === cat));
 
     for (const t of sortedTasks) {
-      const item = createTaskItem(t, true);
+      const item = createTaskItem(todos, t, true);
       group.appendChild(item);
     }
     projectDiv.appendChild(group);
   }
   component.appendChild(projectDiv);
   parent.appendChild(component);
+
+  addButtonListeners(parent, todos, projectId);
 }
 
-function addButtonListeners(component, parent, todos, projectId) {
-  //for all buttons in the projectsComponent
-  component.addEventListener("click", (e) => {
-    if (e.target.tagName.toLowerCase() === 'button') {
-      if (e.target.id === 'new-project') {
-        const nodeToReplace = document.getElementById('form');
-        projectFormComponent(parent, nodeToReplace, todos);
-      }
-      else if (e.target.id === 'new-task') {
-        const nodeToReplace = document.getElementById('form');
-        taskFormComponent(parent, nodeToReplace, todos, null, projectId);
-      }
-      else if (e.target.classList.contains('edit-button')) {
-        const nodeToReplace = document.getElementById(generateTaskItemId(e.target.dataset.taskId));
-        const task = todos.getTaskById(e.target.dataset.taskId);
-        taskFormComponent(parent, nodeToReplace, todos, null, projectId, task);
-      }
-    }
+function addButtonListeners(parent, todos, projectId) {
+  const newProject = document.getElementById('new-project');
+  const newTask = document.getElementById('new-task');
+
+  newProject.addEventListener("click", () => {
+    const nodeToReplace = document.getElementById('form');
+    projectFormComponent(parent, nodeToReplace, todos);
   });
+
+  newTask.addEventListener("click", () => {
+    const nodeToReplace = document.getElementById('form');
+    taskFormComponent(parent, nodeToReplace, todos, null, projectId);
+  });
+
+  const editBtns = document.querySelectorAll('.edit-button');
+  for (let i = 0; i < editBtns.length; i ++){
+    editBtns[i].addEventListener("click", (e) => {
+      const nodeToReplace = document.getElementById(generateTaskItemId(e.target.dataset.taskId));
+      const task = todos.getTaskById(parseInt(e.target.dataset.taskId));
+      taskFormComponent(parent, nodeToReplace, todos, null, projectId, task);
+    });
+  }
 }
+

@@ -1,4 +1,5 @@
 import { navComponent } from "./nav.js";
+import { tasksComponent } from "./tasksComponent.js";
 import { Todo } from "./todo.js";
 
 
@@ -6,7 +7,7 @@ import { Todo } from "./todo.js";
 const todos = Todo(); 
 
 todos.createProject("Project One", "some description...", "2023-07-20", "13:00", "work");
-todos.createProjectProject("Project Two", "some description....", "2023-07-20", "07:00", "work");
+todos.createProject("Project Two", "some description....", "2023-07-20", "07:00", "work");
 todos.createProject("Project Three", "some description...", "2023-09-01", "", "work");
 
 //createTask = (description, projectId, priority, date, time, category)
@@ -19,7 +20,9 @@ console.log(todos.getProjects());
 console.log(todos.getTasks());
 
 (function () {
-  //test drawing the nav bar
+  //test drawing the nav bar + initial state as tasks component? 
   const navParent = document.querySelector('header');
   navComponent(todos, navParent);
+  const content = document.getElementById('content');
+  tasksComponent(todos, "All", content);
 })();

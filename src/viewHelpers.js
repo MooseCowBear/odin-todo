@@ -1,21 +1,21 @@
 export function orderByDate(objectsWithDate) {
   return objectsWithDate.sort( function(a, b) {
-    if (a.getDate() && b.getDate()) {
-      if (a.getDate() > b.getDate()) {
+    if (a.getDateAsDate() && b.getDateAsDate()) {
+      if (a.getDateAsDate() > b.getDateAsDate()) {
         return 1;
       }
-      else if (a.getDate() < b.getDate()) {
+      else if (a.getDateAsDate() < b.getDateAsDate()) {
         return -1;
       }
       else {
         return 0;
       }
     }
-    else if (a.getDate()) {
-      return 1;
-    }
-    else if (b.getDate()) {
+    else if (a.getDateAsDate()) {
       return -1;
+    }
+    else if (b.getDateAsDate()) {
+      return 1;
     }
     else {
       return 0;
@@ -25,14 +25,16 @@ export function orderByDate(objectsWithDate) {
 
 export function getCategories(arr) {
   const categories = arr.map(elem => elem.getCategory());
+  console.log("CATS", [...new Set(categories)].sort());
   return [...new Set(categories)].sort();
 }
 
+//right now passing tasks.. but really want to pass dates or nil
 export function sameDay(one, two) { 
-  if (!one.getDate() && !two.getDate()){
+  if (!one && !two){
     return true;
   }
-  else if (!one.getDate() || !two.getDate()) {
+  else if (!one || !two) {
     return false;
   }
   return one.getDate() === two.getDate() && 

@@ -9,7 +9,7 @@ export function createTaskGroup(groupTitle) {
   return groupDiv;
 }
 
-export function createTaskItem(task, includeDate = false) {
+export function createTaskItem(todos, task, includeDate = false) {
   const itemDiv = document.createElement('div');
   itemDiv.classList.add('item');
   itemDiv.id = generateTaskItemId(task.getId());
@@ -24,7 +24,9 @@ export function createTaskItem(task, includeDate = false) {
 
   check.addEventListener('change', (e) => {
     task.updateStatus();
+
     if (e.target.checked) {
+      console.log("a check box was checked");
       //want to fade out...? only if not showing completed tasks...which would require a bool...
     }
   });
@@ -33,14 +35,16 @@ export function createTaskItem(task, includeDate = false) {
 
   const labelContent = document.createElement('span');
   const description = document.createElement('span');
-  const projectTitle = document.createElement('span');
 
   description.textContent = task.getDescription();
-  projectTitle.textContent = task.getProject();
-  projectTitle.classList.add('project-title');
-
   labelContent.appendChild(description);
-  labelContent.appendChild(projectTitle);
+
+  if (task.getProjectId() > 0) {
+    const projectTitle = document.createElement('span');
+    projectTitle.textContent = todos.getProjectById(task.getProjectId()).getTitle();
+    projectTitle.classList.add('project-title');
+    labelContent.appendChild(projectTitle);
+  }
 
   lbl.appendChild(labelContent);
 
