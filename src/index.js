@@ -17,8 +17,6 @@ todos.createTask("a thing that must be done", 1, "high", "2023-07-17", "12:00", 
 todos.createTask("another thing to do", 1, "low", "2023-07-17", "", "misc");
 todos.createTask("a third thing", 2, "low", "2023-07-18", "", "some other category");
 
-console.log(todos.getProjects());
-console.log(todos.getTasks());
 
 (function () {
   //test drawing the nav bar + initial state as tasks component? 

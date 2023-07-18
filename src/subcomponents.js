@@ -29,8 +29,11 @@ export function createTaskItem(todos, task, includeDate = false) {
     task.updateStatus();
 
     if (e.target.checked) {
-      console.log("a check box was checked");
-      //want to fade out...? only if not showing completed tasks...which would require a bool...
+      const pageTitle = document.querySelector('h1');
+      if (pageTitle.textContent !== "Completed") {
+        const ancestorItem = e.target.closest(".item");
+        ancestorItem.classList.add("fade-out");
+      }
     }
   });
 

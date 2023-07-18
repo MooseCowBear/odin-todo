@@ -129,6 +129,12 @@ button {
 
 .item {
   line-height: 1;
+  transition: all 500ms linear;
+}
+
+.item.fade-out {
+  transform: scaleY(0);
+  opacity: 0;
 }
 
 .item, .item label {
@@ -364,7 +370,7 @@ select:focus + .focus {
   border-radius: inherit;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 550px) {
   body {
     grid-template-columns: 1fr;
   }
