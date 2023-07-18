@@ -154,6 +154,13 @@ button {
   font-size: 0.8rem;
 }
 
+.item-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
 .task-group {
   display: flex;
   flex-direction: column;
@@ -392,11 +399,6 @@ select:focus + .focus {
 
   .new-buttons-div {
     flex-direction: column;
-  }
-
-  .item {
-    flex-wrap: wrap;
-    row-gap: 0.3rem;
   }
 
   .project-header {

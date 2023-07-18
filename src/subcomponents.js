@@ -39,6 +39,9 @@ export function createTaskItem(todos, task, includeDate = false) {
 
   lbl.appendChild(check);
 
+  const wrapper = document.createElement('div');
+  wrapper.classList.add("item-content");
+
   const labelContent = document.createElement('span');
   labelContent.classList.add("label-content");
   const description = document.createElement('span');
@@ -53,9 +56,7 @@ export function createTaskItem(todos, task, includeDate = false) {
     labelContent.appendChild(projectTitle);
   }
 
-  lbl.appendChild(labelContent);
-
-  itemDiv.appendChild(lbl);
+  wrapper.appendChild(labelContent);
 
   if (task.timeFormatted() !== "") {
     const time = document.createElement('div');
@@ -71,7 +72,7 @@ export function createTaskItem(todos, task, includeDate = false) {
     timeContent.textContent = task.timeFormatted(); 
     time.appendChild(timeContent);
 
-    itemDiv.appendChild(time);
+    wrapper.appendChild(time);
   }
 
   const edit = document.createElement('button');
@@ -84,15 +85,19 @@ export function createTaskItem(todos, task, includeDate = false) {
   editIcon.dataset.taskId = `${task.getId()}`;
   edit.appendChild(editIcon);
   
-  itemDiv.appendChild(edit);
+  wrapper.appendChild(edit);
 
   if (task.getPriority() === 'high') {
     const priorty = document.createElement('p'); //change to icon?
     priorty.textContent = "!";
-    itemDiv.appendChild(priorty);
+    wrapper.appendChild(priorty);
   }
 
+  lbl.appendChild(wrapper);
+
   itemDiv.classList.add(task.getPriority());
+
+  itemDiv.appendChild(lbl);
 
   return itemDiv;
 }
