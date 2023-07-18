@@ -1,4 +1,5 @@
 import { generateTaskItemId } from "./viewHelpers.js";
+import Plus from "./plus.svg";
 
 export function createTaskGroup(groupTitle) {
   const groupDiv = document.createElement('div');
@@ -89,15 +90,28 @@ export function createTaskItem(todos, task, includeDate = false) {
 export function addNewFormBtns(parent) {
   const newFormBtnsDiv = document.createElement('div');
   newFormBtnsDiv.classList.add('new-buttons-div');
+
+  const plusIcon1 = new Image();
+  plusIcon1.src = Plus;
+
   const newProject = document.createElement('button');
-  newProject.textContent = "New Project";
   newProject.id = "new-project";
+  newProject.appendChild(plusIcon1);
+  const pcopy = document.createElement('span');
+  pcopy.textContent = "New Project";
+  newProject.appendChild(pcopy);
 
   newFormBtnsDiv.appendChild(newProject);
 
+  const plusIcon2 = new Image();
+  plusIcon2.src = Plus;
+
   const newTask = document.createElement('button');
-  newTask.textContent = "New Task";
   newTask.id = "new-task"; 
+  newTask.appendChild(plusIcon2);
+  const taskcopy = document.createElement('span');
+  taskcopy.textContent = "New Task";
+  newTask.appendChild(taskcopy);
   
   newFormBtnsDiv.appendChild(newTask);
 
