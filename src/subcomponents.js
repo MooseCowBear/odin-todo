@@ -5,6 +5,7 @@ export function createTaskGroup(groupTitle) {
   const title = document.createElement('h2');
   title.textContent = groupTitle;
   groupDiv.appendChild(title);
+  groupDiv.classList.add('task-group');
 
   return groupDiv;
 }
@@ -34,6 +35,7 @@ export function createTaskItem(todos, task, includeDate = false) {
   lbl.appendChild(check);
 
   const labelContent = document.createElement('span');
+  labelContent.classList.add("label-content");
   const description = document.createElement('span');
 
   description.textContent = task.getDescription();
@@ -50,13 +52,8 @@ export function createTaskItem(todos, task, includeDate = false) {
 
   itemDiv.appendChild(lbl);
 
-  if (task.getPriority() === 'high') {
-    const priorty = document.createElement('p'); //change to icon?
-    priorty.textContent = "!";
-    itemDiv.appendChild(priorty);
-  }
-
   const time = document.createElement('div');
+  time.classList.add("datetime-display");
 
   if (includeDate) {
     const dateContent = document.createElement('span');
@@ -77,6 +74,12 @@ export function createTaskItem(todos, task, includeDate = false) {
 
   edit.textContent = "edit"; //for now, will update with icon
   itemDiv.appendChild(edit);
+
+  if (task.getPriority() === 'high') {
+    const priorty = document.createElement('p'); //change to icon?
+    priorty.textContent = "!";
+    itemDiv.appendChild(priorty);
+  }
 
   return itemDiv;
 }

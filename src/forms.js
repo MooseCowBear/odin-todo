@@ -21,22 +21,24 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
   const timeField = createSimpleInput(project, "time", "time", "Time:", "");
   f.appendChild(timeField);
 
-  const description = createTextarea(project, "description", "Description:", "");
+  const description = createTextarea(project, "description", "Description:");
   f.appendChild(description);
 
   const submitBtn = document.createElement("input");
   submitBtn.type = "submit";
   f.appendChild(submitBtn);
 
+  const buttonsDiv = document.createElement('div');
+  buttonsDiv.classList.add('button-div');
   const cancel = document.createElement('button');
   cancel.textContent = 'Cancel';
-  f.appendChild(cancel);
+  buttonsDiv.appendChild(cancel);
 
   if (project) {
     const deleteBtn = document.createElement('button');
     deleteBtn.classList.add('delete-btn'); //will make this small
     deleteBtn.textContent = 'Delete Project';
-    f.appendChild(deleteBtn);
+    buttonsDiv.appendChild(deleteBtn);
 
     deleteBtn.addEventListener("click", () => {
       todos.deleteProject(project.getId());
@@ -44,6 +46,8 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
       navComponent(todos, document.querySelector('header'));
     });
   }
+
+  f.appendChild(buttonsDiv);
 
   component.appendChild(f);
   nodeToReplace.replaceWith(component);
@@ -129,15 +133,17 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
   submitBtn.type = "submit";
   f.appendChild(submitBtn);
 
+  const buttonsDiv = document.createElement('div');
+  buttonsDiv.classList.add('button-div');
   const cancel = document.createElement('button');
   cancel.textContent = 'Cancel';
-  f.appendChild(cancel);
+  buttonsDiv.appendChild(cancel);
 
   if (task) {
     const deleteBtn = document.createElement('button');
     deleteBtn.classList.add('delete-btn');
     deleteBtn.textContent = 'Delete Task';
-    f.appendChild(deleteBtn);
+    buttonsDiv.appendChild(deleteBtn);
 
     deleteBtn.addEventListener("click", () => {
       console.log(todos.getTasks());
@@ -155,6 +161,8 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
       }
     });
   }
+
+  f.appendChild(buttonsDiv);
 
   component.appendChild(f);
   nodeToReplace.replaceWith(component);
@@ -228,6 +236,9 @@ function createSimpleInput(elem, id, type, labelText, warning) {
     console.log("field value: ", field.value);
   }
 
+  const labelWrapper = document.createElement('div');
+  labelWrapper.classList.add('label-wrapper');
+
   const fieldLabel = document.createElement('label');
   fieldLabel.textContent = labelText;
   fieldLabel.htmlFor = id;
@@ -236,8 +247,9 @@ function createSimpleInput(elem, id, type, labelText, warning) {
   notice.textContent = warning;
   notice.classList.add('warning');
 
-  fieldDiv.appendChild(fieldLabel);
-  fieldDiv.appendChild(notice);
+  labelWrapper.appendChild(fieldLabel);
+  labelWrapper.appendChild(notice);
+  fieldDiv.appendChild(labelWrapper);
   fieldDiv.appendChild(field);
 
   return fieldDiv;
@@ -305,7 +317,7 @@ function createPrioritySelect(task, options) {
   return fieldDiv;  
 }
 
-function createTextarea(elem, id, labelText, warning) {
+function createTextarea(elem, id, labelText) {
   const fieldDiv = document.createElement('div');
   fieldDiv.classList.add('input-field');
 
@@ -321,12 +333,7 @@ function createTextarea(elem, id, labelText, warning) {
   fieldLabel.textContent = labelText;
   fieldLabel.htmlFor = id;
 
-  const notice = document.createElement('p');
-  notice.textContent = warning;
-  notice.classList.add('warning');
-
   fieldDiv.appendChild(fieldLabel);
-  fieldDiv.appendChild(notice);
   fieldDiv.appendChild(field);
 
   return fieldDiv;

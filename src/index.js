@@ -1,3 +1,4 @@
+import './style.css';
 import { navComponent } from "./nav.js";
 import { tasksComponent } from "./tasksComponent.js";
 import { Todo } from "./todo.js";

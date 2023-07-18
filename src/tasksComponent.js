@@ -8,6 +8,7 @@ export function tasksComponent(todos, taskSubset, parent) {
   const tasks = todos[`get${taskSubset}Tasks`]();
 
   const component = document.createElement('div');
+  component.classList.add('component');
 
   const title = document.createElement('h1');
   title.textContent = taskSubset === "Today" ? "Tasks" : taskSubset;
@@ -32,6 +33,7 @@ export function tasksComponent(todos, taskSubset, parent) {
   const sortedTasks = orderByDate(tasks);
 
   const tasksDiv = document.createElement('div');
+  tasksDiv.classList.add('main-content');
 
   let currDate = sortedTasks[0].getDateAsDate();
   let currDiv = createTaskGroup(getDivTitle(currDate));

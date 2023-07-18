@@ -7,11 +7,18 @@ export function projectComponent(todos, projectId, parent) {
   parent.textContent = "";
 
   const component = document.createElement('div');
+  component.classList.add('component');
   const header = document.createElement('div');
+  header.classList.add('project-header');
+
   const title = document.createElement('h1');
   title.textContent = todos.getProjectById(projectId).getTitle();
-
   header.appendChild(title);
+
+  const dateDisplay = document.createElement('p');
+  dateDisplay.textContent = todos.getProjectById(projectId).dateFormatted();
+  header.appendChild(dateDisplay);
+
   const projectEdit = document.createElement('button');
   projectEdit.id = "edit-project";
   projectEdit.textContent = 'Edit';
@@ -19,7 +26,12 @@ export function projectComponent(todos, projectId, parent) {
 
   component.appendChild(header);
 
-  //need an edit button for the project
+  const d = todos.getProjectById(projectId).getDescription();
+  if (d !== "") {
+    const descriptDisplay = document.createElement('p');
+    descriptDisplay.textContent = d;
+    component.appendChild(descriptDisplay);
+  }
 
   const newFormDiv = document.createElement('div'); //where new form will go on page if button is pressed
   newFormDiv.id = "form";
@@ -28,6 +40,7 @@ export function projectComponent(todos, projectId, parent) {
   addNewFormBtns(parent);
 
   const projectDiv = document.createElement('div');
+  projectDiv.classList.add('main-content');
 
   const tasks = todos.getTasksByProjectId(projectId); //this is both completed and not
 

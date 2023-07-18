@@ -6,8 +6,13 @@ export function navComponent(todos, parent) {
   //draws buttons to task views: today, upcoming, anytime, complete
   parent.textContent = ""
   const component = document.createElement('nav');
+  component.classList.add('nav');
 
   const tasksDiv = document.createElement('div');
+  const tasksTitle = document.createElement('h2');
+  tasksTitle.textContent = "Tasks";
+  tasksDiv.appendChild(tasksTitle);
+
   const buttons = ['All', 'Today', 'Upcoming', 'Completed'];
 
   for (const b of buttons) {
@@ -20,11 +25,16 @@ export function navComponent(todos, parent) {
   component.appendChild(tasksDiv);
 
   const projectsDiv = document.createElement('div');
+  const projectsDivTitle = document.createElement('h2');
+  projectsDivTitle.textContent = "Projects";
+  projectsDiv.appendChild(projectsDivTitle);
 
   const projects = todos.getProjects();
 
   for (const cat of getCategories(projects)) {
     const projectDiv = document.createElement('div');
+    projectDiv.classList.add('project-div');
+
     const title = document.createElement('h3'); //h1 and h2 will be in the main content part
     title.textContent = cat;
     projectDiv.appendChild(title);
