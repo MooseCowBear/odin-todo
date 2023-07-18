@@ -7,7 +7,7 @@ export function navComponent(todos, parent) {
   const component = document.createElement('nav');
 
   const tasksDiv = document.createElement('div');
-  const buttons = ['Today', 'Upcoming', 'Anytime', 'Completed'];
+  const buttons = ['All', 'Today', 'Upcoming', 'Completed'];
 
   for (const b of buttons) {
     const btn = document.createElement('button');
@@ -51,9 +51,8 @@ function addTaskListener(buttonDiv, todos) {
   buttonDiv.addEventListener("click", (e) => {
     if (e.target.tagName.toLowerCase() === 'button') {
       const content = document.getElementById('content');
-      const tasks = todos[`get${e.target.textContent}Tasks`]();
 
-      tasksComponent(tasks, content);
+      tasksComponent(todos, e.target.textContent, content);
     }
   });
 }

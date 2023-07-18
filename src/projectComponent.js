@@ -1,5 +1,6 @@
 import { orderByDate, getCategories } from "./viewHelpers.js";
-import { createTaskGroup, createTaskItem } from "./subcomponents.js";
+import { createTaskGroup, createTaskItem, addNewFormBtns } from "./subcomponents.js";
+import { projectFormComponent, taskFormComponent } from "./forms.js";
 
 export function projectComponent(todos, projectId, parent) {
   parent.textContent = "";
@@ -8,6 +9,13 @@ export function projectComponent(todos, projectId, parent) {
   const title = document.createElement('h1');
   title.textContent = todos.getProjectById(projectId).getTitle();
   component.appendChild(title);
+
+  const newFormDiv = document.createElement('div'); //where new form will go on page if button is pressed
+  newFormDiv.id = "form";
+  component.appendChild(newFormDiv); 
+
+  addNewFormBtns(parent);
+  addNewButtonListeners(parent, projectId, todos, newFormDiv);
 
   const projectDiv = document.createElement('div');
 
@@ -27,4 +35,18 @@ export function projectComponent(todos, projectId, parent) {
   }
   component.appendChild(projectDiv);
   parent.appendChild(component);
+}
+
+function addNewButtonListeners(parent, projectId, todos, nodeToReplace) {
+  const newProject = document.getElementById('new-project');
+
+  const newTask = document.getElementById('new-task');
+
+  newProject.addEventListener("click", () => {
+    projectFormComponent(parent, nodeToReplace, todos);
+  });
+
+  newTask.addEventListener("click", () => {
+    taskFormComponent(parent, nodeToReplace, todos, null, projectId);
+  });
 }

@@ -5,8 +5,8 @@ export const Todo = () => {
   const projects = [];
   const tasks = [];
 
-  let projectIdCounter = 0;
-  let taskIdCounter = 0;
+  let projectIdCounter = 1;
+  let taskIdCounter = 1;
 
   const getProjectById = (id) => {
     const p = projects.filter(elem => elem.getId() === id);
@@ -14,19 +14,20 @@ export const Todo = () => {
     return p[0];
   };
 
-  const _getTaskById = (id) => {
+  const getTaskById = (id) => {
     const t = tasks.filter(elem => elem.getId() === id);
     if (t.length === 0) return null;
     return t[0];
   };
 
-  const createProject = (title, description, date, time, category) => {
+  const createProject = (title, description, date, time, category = "uncategorized") => {
     const p = Project(projectIdCounter, title, description, date, time, category);
     projects.push(p);
     projectIdCounter++;
+    return p.getId();
   };
 
-  const createTask = (description, projectId, priority, date, time, category) => {
+  const createTask = (description, projectId, priority, date, time, category = "uncategorized") => {
     const t = Task(taskIdCounter, description, projectId, priority, date, time, category);
     tasks.push(t);
     taskIdCounter++;
@@ -41,8 +42,8 @@ export const Todo = () => {
     tasks = tasks.filter(elem => elem.getId(id) === id)
   };
 
-  const updateProject = (id, title, description, date, time, category) => {
-    const project = _getProjectById(id);
+  const updateProject = (id, title, description, date, time, category = "uncategorized") => {
+    const project = getProjectById(id);
     project.setTitle(title);
     project.setDescription(description);
     project.setDate(date);
@@ -50,8 +51,8 @@ export const Todo = () => {
     project.setCategory(category);
   };
 
-  const updateTask = (id, description, priority, date, time, category) => {
-    const task = _getTaskById(id);
+  const updateTask = (id, description, priority, date, time, category = "uncategorized") => {
+    const task = getTaskById(id);
     task.setDescription(description);
     task.setPriority(priority);
     task.setDate(date);
@@ -78,7 +79,7 @@ export const Todo = () => {
     return tasks.filter(elem => (elem.getDate() !== null && elem.getDate() >= today && !elem.complete()));
   };
 
-  const getAnytimeTasks = () => {
+  const getAllTasks = () => {
     return tasks.filter(elem => !elem.complete());
   }
 
@@ -92,6 +93,7 @@ export const Todo = () => {
 
   return {
     getProjectById,
+    getTaskById,
     createProject,
     createTask,
     deleteProject,
@@ -101,7 +103,7 @@ export const Todo = () => {
     getProjects,
     getTasks,
     getTodayTasks,
-    getAnytimeTasks,
+    getAllTasks,
     getUpcomingTasks,
     getCompletedTasks,
     getTasksByProjectId

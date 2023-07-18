@@ -56,3 +56,21 @@ export function createTaskItem(task, includeDate = false) {
   itemDiv.appendChild(time);
   return itemDiv;
 }
+
+export function addNewFormBtns(parent) {
+  const newFormBtnsDiv = document.createElement('div');
+  newFormBtnsDiv.classList.add('new-buttons-div');
+  const newProject = document.createElement('button');
+  newProject.textContent = "New Project";
+  newProject.id = "new-project";
+
+  newFormBtnsDiv.appendChild(newProject);
+
+  const newTask = document.createElement('button');
+  newTask.textContent = "New Task";
+  newTask.id = "new-task"; 
+  
+  newFormBtnsDiv.appendChild(newTask);
+
+  parent.appendChild(newFormBtnsDiv);
+}
