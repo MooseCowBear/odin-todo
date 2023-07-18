@@ -161,7 +161,7 @@ button {
 .new-buttons-div {
   display: flex;
   justify-content: space-between;
-  width: 100%;;
+  width: 100%;
 }
 
 .new-buttons-div button {
@@ -355,4 +355,24 @@ select:focus + .focus {
   bottom: -1px;
   border: 2px solid var(--alert);
   border-radius: inherit;
+}
+
+@media only screen and (max-width: 500px) {
+  body {
+    grid-template-columns: 1fr;
+  }
+
+  main {
+    padding: 5vw;
+    grid-row: 1;
+  }
+
+  .nav {
+    height: max-content;
+    grid-row: 2;
+  }
+
+  .new-buttons-div {
+    flex-direction: column;
+  }
 }

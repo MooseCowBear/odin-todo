@@ -13,6 +13,8 @@ export function navComponent(todos, parent) {
   const component = document.createElement('nav');
   component.classList.add('nav');
 
+  //need a hambuger for the mobile layout...
+
   const tasksDiv = document.createElement('div');
   const tasksTitle = document.createElement('h2');
   tasksTitle.textContent = "Tasks";
