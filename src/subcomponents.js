@@ -1,5 +1,6 @@
 import { generateTaskItemId } from "./viewHelpers.js";
 import Plus from "./plus.svg";
+import Info from "./information-outline.svg";
 
 export function createTaskGroup(groupTitle) {
   const groupDiv = document.createElement('div');
@@ -53,27 +54,34 @@ export function createTaskItem(todos, task, includeDate = false) {
 
   itemDiv.appendChild(lbl);
 
-  const time = document.createElement('div');
-  time.classList.add("datetime-display");
+  if (task.timeFormatted() !== "") {
+    const time = document.createElement('div');
+    time.classList.add("datetime-display");
 
-  if (includeDate) {
-    const dateContent = document.createElement('span');
-    dateContent.textContent = task.dateFormatted();
-    time.appendChild(dateContent);
+    if (includeDate) {
+      const dateContent = document.createElement('span');
+      dateContent.textContent = task.dateFormatted();
+      time.appendChild(dateContent);
+    }
+
+    const timeContent = document.createElement('span');
+    timeContent.textContent = task.timeFormatted(); 
+    time.appendChild(timeContent);
+
+    itemDiv.appendChild(time);
   }
-
-  const timeContent = document.createElement('span');
-  timeContent.textContent = task.timeFormatted(); 
-  time.appendChild(timeContent);
-
-  itemDiv.appendChild(time);
 
   //here want to add the info icon in a button to edit
   const edit = document.createElement('button');
   edit.classList.add("edit-button");
   edit.dataset.taskId = `${task.getId()}`; //to be used in event listener that updates task
 
-  edit.textContent = "edit"; //for now, will update with icon
+  const editIcon = new Image();
+  editIcon.src = Info;
+  editIcon.classList.add("icon");
+  editIcon.dataset.taskId = `${task.getId()}`;
+  edit.appendChild(editIcon);
+  
   itemDiv.appendChild(edit);
 
   if (task.getPriority() === 'high') {
