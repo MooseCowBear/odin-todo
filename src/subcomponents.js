@@ -71,7 +71,6 @@ export function createTaskItem(todos, task, includeDate = false) {
     itemDiv.appendChild(time);
   }
 
-  //here want to add the info icon in a button to edit
   const edit = document.createElement('button');
   edit.classList.add("edit-button");
   edit.dataset.taskId = `${task.getId()}`; //to be used in event listener that updates task

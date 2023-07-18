@@ -260,6 +260,9 @@ function createProjectSelect(task, options) {
   const fieldDiv = document.createElement('div');
   fieldDiv.classList.add('input-field');
 
+  const selectWrapper = document.createElement('div');
+  selectWrapper.classList.add('select');
+
   const field = document.createElement('select');
   field.id = "project";
 
@@ -285,8 +288,9 @@ function createProjectSelect(task, options) {
     field.appendChild(selectOption);
   }
 
+  selectWrapper.appendChild(field);
   fieldDiv.appendChild(fieldLabel);
-  fieldDiv.appendChild(field);
+  fieldDiv.appendChild(selectWrapper);
 
   return fieldDiv;
 }
@@ -294,6 +298,9 @@ function createProjectSelect(task, options) {
 function createPrioritySelect(task, options) {
   const fieldDiv = document.createElement('div');
   fieldDiv.classList.add('input-field');
+
+  const selectWrapper = document.createElement('div');
+  selectWrapper.classList.add('select');
 
   const field = document.createElement('select');
   field.id = "priority";
@@ -312,8 +319,9 @@ function createPrioritySelect(task, options) {
     field.appendChild(selectOption);
   }
 
+  selectWrapper.appendChild(field);
   fieldDiv.appendChild(fieldLabel);
-  fieldDiv.appendChild(field);
+  fieldDiv.appendChild(selectWrapper);
 
   return fieldDiv;  
 }
