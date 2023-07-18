@@ -35,7 +35,7 @@ export function navComponent(todos, parent) {
       projectItem.classList.add("project-item");
       projectItem.textContent = p.getTitle();
       projectDiv.appendChild(projectItem);
-      projectItem.dataset.id = `${p.id}`;
+      projectItem.dataset.id = `${p.getId()}`;
     }
     projectsDiv.appendChild(projectDiv);
   }

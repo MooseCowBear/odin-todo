@@ -2,6 +2,8 @@ import { orderByDate, getCategories } from "./viewHelpers.js";
 import { createTaskGroup, createTaskItem, addNewFormBtns } from "./subcomponents.js";
 import { projectFormComponent, taskFormComponent } from "./forms.js";
 
+//needs edit option!!
+
 export function projectComponent(todos, projectId, parent) {
   parent.textContent = "";
 
@@ -19,7 +21,7 @@ export function projectComponent(todos, projectId, parent) {
 
   const projectDiv = document.createElement('div');
 
-  const tasks = todos.getTasksByProjectId(projectId);
+  const tasks = todos.getTasksByProjectId(projectId); //this is both completed and not
 
   for (const cat of getCategories(tasks)) { 
     //create task group 

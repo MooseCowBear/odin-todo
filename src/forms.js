@@ -31,6 +31,18 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
   cancel.textContent = 'Cancel';
   f.appendChild(cancel);
 
+  if (project) {
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList('delete-btn'); //will make this small
+    deleteBtn.textContent = 'Delete Project';
+    f.appendChild(deleteBtn);
+
+    deleteBtn.addEventListener("click", () => {
+      todos.deleteProject(project.getId());
+      tasksComponent(todos, "All", parent); //want to go to "home"
+    });
+  }
+
   component.appendChild(f);
   nodeToReplace.replaceWith(component);
 
@@ -112,6 +124,23 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
   const cancel = document.createElement('button');
   cancel.textContent = 'Cancel';
   f.appendChild(cancel);
+
+  if (task) {
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList('delete-btn');
+    deleteBtn.textContent = 'Delete Task';
+    f.appendChild(deleteBtn);
+
+    deleteBtn.addEventListener("click", () => {
+      todos.deleteTask(task.getId());
+      if (taskSubset) {
+        tasksComponent(todos, taskSubset, parent);
+      }
+      else {
+        projectComponent(todos, projectID, parent);
+      }
+    });
+  }
 
   component.appendChild(f);
   nodeToReplace.replaceWith(component);
