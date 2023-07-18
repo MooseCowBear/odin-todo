@@ -21,7 +21,7 @@ export function createTaskItem(todos, task, includeDate = false) {
   const check = document.createElement('input');
   check.type = 'checkbox'; 
 
-  if (task.completed) {
+  if (task.complete()) {
     check.checked = true;
   }
 
