@@ -1,5 +1,5 @@
 import { orderByDate, getCategories, generateTaskItemId } from "./viewHelpers.js";
-import { createTaskGroup, createTaskItem, addNewFormBtns, addElement } from "./subcomponents.js";
+import { createTaskGroup, createTaskItem, addNewFormBtns, addElement} from "./subcomponents.js";
 import { projectFormComponent, taskFormComponent } from "./forms.js";
 
 
@@ -63,4 +63,3 @@ function addButtonListeners(parent, todos, projectId) {
     });
   }
 }
-

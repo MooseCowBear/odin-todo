@@ -4,10 +4,10 @@ import { projectFormComponent, taskFormComponent } from "./forms.js";
 import { updateStorage } from "./storage.js";
 
 export function tasksComponent(todos, taskSubset, parent) {
-  console.log(taskSubset);
   parent.textContent = "";
 
   addNewFormBtns(parent);
+  addNewButtonListeners(parent, todos, taskSubset);
 
   const tasks = todos[`get${taskSubset}Tasks`]();
 
@@ -38,7 +38,7 @@ export function tasksComponent(todos, taskSubset, parent) {
       createTaskItem(currDiv, todos, t);
     }
   }
-  addButtonListeners(parent, todos, taskSubset);
+  addEditButtonListeners(parent, todos, taskSubset);
 
   if (taskSubset === 'Completed') {
     const clearCompleted = addElement('button', title, ['clear-deleted'], 'delete all');
@@ -51,7 +51,7 @@ export function tasksComponent(todos, taskSubset, parent) {
   }
 }
 
-function addButtonListeners(parent, todos, taskSubset) {
+function addNewButtonListeners(parent, todos, taskSubset) {
   const newProject = document.getElementById('new-project');
   const newTask = document.getElementById('new-task');
 
@@ -64,7 +64,9 @@ function addButtonListeners(parent, todos, taskSubset) {
     const nodeToReplace = document.getElementById('form');
     taskFormComponent(parent, nodeToReplace, todos, taskSubset, null);
   });
+}
 
+function addEditButtonListeners(parent, todos, taskSubset) {
   const editBtns = document.querySelectorAll('.edit-button');
   for (let i = 0; i < editBtns.length; i ++){
     editBtns[i].addEventListener("click", (e) => {
