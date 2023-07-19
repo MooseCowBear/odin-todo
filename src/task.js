@@ -26,7 +26,7 @@ export const Task = (id, description, projectId, priority, date, time, category 
   };
 
   const setCategory = (newCategory) => {
-    category = newCategory;
+    category = newCategory.trim().toLowerCase();
   };
 
   const getPriority = () => {

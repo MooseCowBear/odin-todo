@@ -23,7 +23,7 @@ export function projectComponent(todos, projectId, parent) {
 
   const projectDiv = addElement('div', component, ['main-content']);
 
-  const tasks = todos.getTasksByProjectId(projectId); //this is both completed and not
+  const tasks = todos.getTasksByProjectId(projectId); 
 
   for (const cat of getCategories(tasks)) { 
     const group = createTaskGroup(projectDiv, cat); 
@@ -57,8 +57,8 @@ function addButtonListeners(parent, todos, projectId) {
   const editBtns = document.querySelectorAll('.edit-button');
   for (let i = 0; i < editBtns.length; i ++){
     editBtns[i].addEventListener("click", (e) => {
-      const taskDiv = document.getElementById(generateTaskItemId(e.target.dataset.taskId));
-      const task = todos.getTaskById(parseInt(e.target.dataset.taskId));
+      const taskDiv = document.getElementById(generateTaskItemId(e.target.dataset.taskid));
+      const task = todos.getTaskById(parseInt(e.target.dataset.taskid));
       taskFormComponent(parent, taskDiv, todos, null, projectId, task);
     });
   }

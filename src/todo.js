@@ -21,16 +21,16 @@ export const Todo = () => {
     return t[0];
   };
 
-  const createProject = (title, description, date, time, category = "uncategorized") => {
+  const createProject = (title, description, date, time, category) => {
     const p = Project(projectIdCounter, title, description, date, time, category);
     projects.push(p);
     projectIdCounter++;
     return p.getId();
   };
 
-  const createTask = (description, projectId, priority, date, time, category = "uncategorized") => {
+  const createTask = (description, projectId, priority, date, time, category) => {
 
-    const t = Task(taskIdCounter, description, projectId, priority, date, time, category);
+    const t = Task(taskIdCounter, description, parseInt(projectId), priority, date, time, category);
     tasks.push(t);
     taskIdCounter++;
   };
@@ -90,7 +90,7 @@ export const Todo = () => {
   };
 
   const getTasksByProjectId = (id) => {
-    return tasks.filter(elem => elem.getProjectId() === id);
+    return tasks.filter(elem => elem.getProjectId() === id && !elem.complete());
   };
 
   return {

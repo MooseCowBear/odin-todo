@@ -1,44 +1,25 @@
 import { projectComponent } from "./projectComponent.js";
 import { tasksComponent } from "./tasksComponent.js";
 import { navComponent } from "./nav.js";
+import { addElement } from "./subcomponents.js";
 
 export function projectFormComponent(parent, nodeToReplace, todos, project = null) {
-  const component = document.createElement('div');
-  component.id = "form";
-  component.classList.add('form');
+  const component = addFormComponent(nodeToReplace);
+  const f = addElement('form', component, []);
 
-  const f = document.createElement('form');
+  const titleField = createSimpleInput(f, project, "title", "text", "Title: *", "Project must have a title.");
+  const categoryField = createSimpleInput(f, project, "category", "text", "Category:", "")
+  const dateField = createSimpleInput(f, project, "date", "date", "Deadline:", "");
+  const timeField = createSimpleInput(f, project, "time", "time", "Time:", "");
+  const descriptionField = createTextarea(f, project, "description", "Description:");
 
-  const titleField = createSimpleInput(project, "title", "text", "Title: *", "Project must have a title.");
-  f.appendChild(titleField);
+  const submitBtn = addElement('input', f, [], null, {type: 'submit'});
 
-  const categoryField = createSimpleInput(project, "category", "text", "Category:", "")
-  f.appendChild(categoryField);
-
-  const dateField = createSimpleInput(project, "date", "date", "Deadline:", "");
-  f.appendChild(dateField);
-
-  const timeField = createSimpleInput(project, "time", "time", "Time:", "");
-  f.appendChild(timeField);
-
-  const description = createTextarea(project, "description", "Description:");
-  f.appendChild(description);
-
-  const submitBtn = document.createElement("input");
-  submitBtn.type = "submit";
-  f.appendChild(submitBtn);
-
-  const buttonsDiv = document.createElement('div');
-  buttonsDiv.classList.add('button-div');
-  const cancel = document.createElement('button');
-  cancel.textContent = 'Cancel';
-  buttonsDiv.appendChild(cancel);
+  const buttonsDiv = addElement('div', f, ['button-div']);
+  const cancel = addElement('button', buttonsDiv, [], 'Cancel');
 
   if (project) {
-    const deleteBtn = document.createElement('button');
-    deleteBtn.classList.add('delete-btn'); //will make this small
-    deleteBtn.textContent = 'Delete Project';
-    buttonsDiv.appendChild(deleteBtn);
+    const deleteBtn = addElement('button', buttonsDiv, ['delete-btn'], 'Delete Task');
 
     deleteBtn.addEventListener("click", () => {
       todos.deleteProject(project.getId());
@@ -46,11 +27,6 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
       navComponent(todos, document.querySelector('header'));
     });
   }
-
-  f.appendChild(buttonsDiv);
-
-  component.appendChild(f);
-  nodeToReplace.replaceWith(component);
 
   submitBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -60,26 +36,26 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
     if (project) {
       todos.updateProject(
         project.getId(), 
-        document.getElementById('title').value.trim().toLowerCase(), 
-        document.getElementById('description').value, 
-        document.getElementById('date').value, 
-        document.getElementById('time').value, 
-        document.getElementById('category').value.trim().toLowerCase()
+        titleField.value, 
+        descriptionField.value,
+        dateField.value,
+        timeField.value,
+        categoryField.value
       );
-      
       projectComponent(todos, project.getId(), parent);
     }
     else { 
       const projectId = todos.createProject(
-        document.getElementById('title').value.trim().toLowerCase(), 
-        document.getElementById('description').value, 
-        document.getElementById('date').value, 
-        document.getElementById('time').value, 
-        document.getElementById('category').value.trim().toLowerCase()
+        titleField.value, 
+        descriptionField.value,
+        dateField.value,
+        timeField.value,
+        categoryField.value
       );
       projectComponent(todos, projectId, parent);
-      navComponent(todos, document.querySelector('header'));
     }
+    //redraw nav, bc might have changed title even if just update
+    navComponent(todos, document.querySelector('header'));
   });
 
   cancel.addEventListener("click", () => {
@@ -88,57 +64,32 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
 }
 
 export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, projectID, task = null) {
-  const component = document.createElement('div');
-  component.id = "form";
-  component.classList.add('form');
+  const component = addFormComponent(nodeToReplace);
+  const f = addElement('form', component, []);
 
-  const f = document.createElement('form');
+  const descriptionField = createSimpleInput(f, task, "description", "text", "Task: *", "Must have task.");
+  let projectField;
 
-  const description = createSimpleInput(task, "description", "text", "Task: *", "Must have task.");
-  f.appendChild(description);
-
-  //if you came from a project's page, would expect that that project is the project for the task.
-  //in that case, would want a hidden field with projectid value
   if (!task && !projectID) {
     const projects = todos.getProjects(); 
-    const projectIdField = createProjectSelect(task, projects);
-    f.appendChild(projectIdField);
+    projectField = createProjectSelect(f, task, projects);
   }
   else if (!task && projectID) {
-    const projectIdField = document.createElement("input");
-    projectIdField.type = "hidden";
-    projectIdField.value = projectID;
-    projectIdField.id = "project";
-    f.appendChild(projectIdField);
+    projectField = addElement('input', f, [], null, {type: 'hidden', value: projectID, id: 'project'});
   }
 
-  const priority = createPrioritySelect(task, ["low", "medium", "high"]);
-  f.appendChild(priority);
+  const priorityField = createPrioritySelect(f, task, ["low", "medium", "high"]);
+  const dateField = createSimpleInput(f, task, "date", "date", "Deadline:", "");
+  const timeField = createSimpleInput(f, task, "time", "time", "Time:", "");
+  const categoryField = createSimpleInput(f, task, "category", "text", "Category:");
 
-  const dateField = createSimpleInput(task, "date", "date", "Deadline:", "");
-  f.appendChild(dateField);
+  const submitBtn = addElement('input', f, [], null, {type: 'submit'});
 
-  const timeField = createSimpleInput(task, "time", "time", "Time:", "");
-  f.appendChild(timeField);
-
-  const categoryField = createSimpleInput(task, "category", "text", "Category:");
-  f.appendChild(categoryField);
-
-  const submitBtn = document.createElement("input");
-  submitBtn.type = "submit";
-  f.appendChild(submitBtn);
-
-  const buttonsDiv = document.createElement('div');
-  buttonsDiv.classList.add('button-div');
-  const cancel = document.createElement('button');
-  cancel.textContent = 'Cancel';
-  buttonsDiv.appendChild(cancel);
+  const buttonsDiv = addElement('div', f, ['button-div']);
+  const cancel = addElement('button', buttonsDiv, [], 'Cancel');
 
   if (task) {
-    const deleteBtn = document.createElement('button');
-    deleteBtn.classList.add('delete-btn');
-    deleteBtn.textContent = 'Delete Task';
-    buttonsDiv.appendChild(deleteBtn);
+    const deleteBtn = addElement('button', buttonsDiv, ['delete-btn'], 'Delete Task');
 
     deleteBtn.addEventListener("click", () => {
       todos.deleteTask(task.getId());
@@ -152,27 +103,19 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
     });
   }
 
-  f.appendChild(buttonsDiv);
-
-  component.appendChild(f);
-  nodeToReplace.replaceWith(component);
-
   submitBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    const validates = validateInput([description]);
+    const validates = validateInput([descriptionField]);
     if (!validates) return; 
-
-    const catInput = document.getElementById('category').value.trim();
-    const cat = catInput === "" ? "uncategorized" : catInput;
 
     if (task) {
       todos.updateTask(
         task.getId(), 
-        document.getElementById('description').value, 
-        document.getElementById('priority').value,
-        document.getElementById('date').value, 
-        document.getElementById('time').value, 
-        cat.toLowerCase()
+        descriptionField.value,
+        priorityField.value,
+        dateField.value,
+        timeField.value,
+        categoryField.value
       );
       
       if (taskSubset) {
@@ -184,12 +127,12 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
     }
     else {
       todos.createTask(
-        document.getElementById('description').value, 
-        parseInt(document.getElementById('project').value),
-        document.getElementById('priority').value,
-        document.getElementById('date').value, 
-        document.getElementById('time').value, 
-        cat.toLowerCase()
+        descriptionField.value,
+        projectField.value,
+        priorityField.value,
+        dateField.value,
+        timeField.value,
+        categoryField.value
       );
 
       const noTaskMessage = document.getElementById('no-task-message');
@@ -211,136 +154,86 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
   });
 }
 
-function createSimpleInput(elem, id, type, labelText, warning) {
-  const fieldDiv = document.createElement('div');
-  fieldDiv.classList.add('input-field');
+function addFormComponent(nodeToReplace) {
+  const component = document.createElement('div'); 
+  component.id = "form";
+  component.classList.add('form');
+  nodeToReplace.replaceWith(component);
 
-  const field = document.createElement('input');
-  field.type = type;
-  field.id = id;
+  return component;
+}
+
+function createSimpleInput(parent, elem, id, type, labelText, warning) {
+  const fieldDiv = addElement('div', parent, ['input-field']);
+  const labelWrapper = addElement('div', fieldDiv, ['label-wrapper']);
+  addElement('label', labelWrapper, [], labelText, {htmlFor: id});
+  addElement('p', labelWrapper, ['warning'], warning);
+  const field = addElement('input', fieldDiv, [], null, {type: type, id: id});
 
   if (elem) {
     field.value = elem[`get${id.charAt(0).toUpperCase() + id.slice(1)}`]();
   }
-
-  const labelWrapper = document.createElement('div');
-  labelWrapper.classList.add('label-wrapper');
-
-  const fieldLabel = document.createElement('label');
-  fieldLabel.textContent = labelText;
-  fieldLabel.htmlFor = id;
-
-  const notice = document.createElement('p');
-  notice.textContent = warning;
-  notice.classList.add('warning');
-
-  labelWrapper.appendChild(fieldLabel);
-  labelWrapper.appendChild(notice);
-  fieldDiv.appendChild(labelWrapper);
-  fieldDiv.appendChild(field);
-
-  return fieldDiv;
+  return field;
 }
 
-function createProjectSelect(task, options) {
-  const fieldDiv = document.createElement('div');
-  fieldDiv.classList.add('input-field');
+function createProjectSelect(parent, task, options) {
+  const fieldDiv = addElement('div', parent, ['input-field']);
+  addElement('label', fieldDiv, [], 'Project:', {htmlFor: 'project'});
+  const selectWrapper = addElement('div', fieldDiv, ['select']);
+  const field = addElement('select', selectWrapper, [], null, {id: 'project'});
 
-  const selectWrapper = document.createElement('div');
-  selectWrapper.classList.add('select');
+  const noneOption = addElement('option', field, [], 'None', {value: 0});
 
-  const field = document.createElement('select');
-  field.id = "project";
-
-  const fieldLabel = document.createElement('label');
-  fieldLabel.textContent = "Project:";
-  fieldLabel.htmlFor = "project";
-
-  const noneOption = document.createElement('option');
-  noneOption.value = 0;
-  noneOption.textContent = "None";
   if (!task) {
     noneOption.selected = true;
   }
-  field.appendChild(noneOption);
 
   for (const opt of options) {
-    const selectOption = document.createElement('option');
-    selectOption.value = opt.getId();
-    selectOption.textContent = opt.getTitle();
+    const selectOption = addElement('option', field, [], opt.getTitle(), {value: opt.getId()});
+
     if (task && task.getProjectId() === opt.getId()) {
       selectOption.selected = true;
     }
-    field.appendChild(selectOption);
   }
-
-  selectWrapper.appendChild(field);
-  fieldDiv.appendChild(fieldLabel);
-  fieldDiv.appendChild(selectWrapper);
-
-  return fieldDiv;
+  return field;
 }
 
-function createPrioritySelect(task, options) {
-  const fieldDiv = document.createElement('div');
-  fieldDiv.classList.add('input-field');
-
-  const selectWrapper = document.createElement('div');
-  selectWrapper.classList.add('select');
-
-  const field = document.createElement('select');
-  field.id = "priority";
-
-  const fieldLabel = document.createElement('label');
-  fieldLabel.textContent = "Priority:";
-  fieldLabel.htmlFor = "priority";
+function createPrioritySelect(parent, task, options) {
+  const fieldDiv = addElement('div', parent, ['input-field']);
+  addElement('label', fieldDiv, [], 'Priority', {htmlFor: 'priority'});
+  const selectWrapper = addElement('div', fieldDiv, ['select']);
+  const field = addElement('select', selectWrapper, [], null, {id: 'priority'});
 
   for (const opt of options) {
-    const selectOption = document.createElement('option');
-    selectOption.value = opt;
-    selectOption.textContent = opt;
+    const selectOption = addElement('option', field, [], opt, {value: opt});
+  
     if (task && opt === task.getPriority()) {
       selectOption.selected = true;
     }
-    field.appendChild(selectOption);
   }
-
-  selectWrapper.appendChild(field);
-  fieldDiv.appendChild(fieldLabel);
-  fieldDiv.appendChild(selectWrapper);
-
-  return fieldDiv;  
+  return field; 
 }
 
-function createTextarea(elem, id, labelText) {
-  const fieldDiv = document.createElement('div');
-  fieldDiv.classList.add('input-field');
-
-  const field = document.createElement('textarea');
-  field.id = id;
+function createTextarea(parent, elem, id, labelText) {
+  const fieldDiv = addElement('div', parent, ['input-field']);
+  addElement('label', fieldDiv, [], labelText, {htmlFor: id});
+  const field = addElement('textarea', fieldDiv, [], null, {id: id});
 
   if (elem) {
     field.value = elem[`get${id.charAt(0).toUpperCase() + id.slice(1)}`]();
   }
 
-  const fieldLabel = document.createElement('label');
-  fieldLabel.textContent = labelText;
-  fieldLabel.htmlFor = id;
-
-  fieldDiv.appendChild(fieldLabel);
-  fieldDiv.appendChild(field);
-
-  return fieldDiv;
+  return field; 
 }
 
 function validateInput(fields) {
   let good = true;
   for (const f of fields) {
-    const input = f.querySelector('input');
-    if (input.value.trim() === "") {
-      const warning = f.querySelector('.warning');
-      warning.classList.add('show');
+    if (f.value.trim() === "") {
       good = false;
+      const theForm = f.closest('form');
+      const warning = theForm.querySelector('.warning');
+      warning.classList.add('show');
     }
   }
   return good;

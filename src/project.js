@@ -12,7 +12,7 @@ export const Project = (id, title, description, date, time, category) => {
   };
 
   const setTitle = (newTitle) => {
-    title = newTitle;
+    title = newTitle.trim().toLowerCase();
   };
 
   const getDescription = () => {
@@ -28,7 +28,7 @@ export const Project = (id, title, description, date, time, category) => {
   };
 
   const setCategory = (newCategory) => {
-    category = newCategory;
+    category = newCategory.trim().toLowerCase();
   };
 
   return {

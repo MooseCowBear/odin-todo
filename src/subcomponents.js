@@ -26,8 +26,6 @@ export function addImage(src, parent, classes = [], options = {}) {
   }
 }
 
-//all option keys with data-whatever must be strings because of the hypens! chars only can be symbols
-
 export function addNewFormBtns(parent) {
   const newFormBtnsDiv = addElement('div', parent, ['new-buttons-div']);
   const newProject = addElement('button', newFormBtnsDiv, [], null, {id: "new-project"});
@@ -37,8 +35,6 @@ export function addNewFormBtns(parent) {
   const newTask = addElement('button', newFormBtnsDiv, [], null, {id: "new-task"});
   addImage(Plus, newTask);
   addElement('p', newTask, [], "New Task");
-
-  console.log(newFormBtnsDiv);
 }
 
 export function createTaskGroup(parent, groupTitle) {
@@ -48,7 +44,6 @@ export function createTaskGroup(parent, groupTitle) {
   return groupDiv;
 }
 
-//needs to take parent elem as arg!
 export function createTaskItem(parent, todos, task, includeDate = false) { 
   const itemDiv = addElement('div', parent, ['item', task.getPriority()], null, {id: generateTaskItemId(task.getId())});
   const lbl = addElement('label', itemDiv, []);
