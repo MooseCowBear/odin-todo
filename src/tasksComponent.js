@@ -4,25 +4,15 @@ import { projectFormComponent, taskFormComponent } from "./forms.js";
 import { updateStorage } from "./storage.js";
 
 export function tasksComponent(todos, taskSubset, parent) {
+  console.log(taskSubset);
   parent.textContent = "";
 
   addNewFormBtns(parent);
-  addButtonListeners(parent, todos, taskSubset);
 
   const tasks = todos[`get${taskSubset}Tasks`]();
 
   const component = addElement('div', parent, ['component']);
   const title = addElement('h1', component, [], (taskSubset === "Today" ? "Tasks" : taskSubset));
-
-  if (taskSubset === 'Completed') {
-    const clearCompleted = addElement('button', title, ['clear-deleted'], 'delete all');
-    clearCompleted.addEventListener("click", () => {
-      todos.clearCompletedTasks();
-      updateStorage(todos);
-
-      tasksComponent(todos, 'Completed', parent);
-    });
-  }
 
   addElement('div', component, [], null, {id: 'form'});
 
@@ -48,6 +38,17 @@ export function tasksComponent(todos, taskSubset, parent) {
       createTaskItem(currDiv, todos, t);
     }
   }
+  addButtonListeners(parent, todos, taskSubset);
+  
+  if (taskSubset === 'Completed') {
+    const clearCompleted = addElement('button', title, ['clear-deleted'], 'delete all');
+    clearCompleted.addEventListener("click", () => {
+    todos.clearCompletedTasks();
+      updateStorage(todos);
+
+      tasksComponent(todos, 'Completed', parent);
+    });
+  }
 }
 
 function addButtonListeners(parent, todos, taskSubset) {
@@ -67,6 +68,7 @@ function addButtonListeners(parent, todos, taskSubset) {
   const editBtns = document.querySelectorAll('.edit-button');
   for (let i = 0; i < editBtns.length; i ++){
     editBtns[i].addEventListener("click", (e) => {
+      console.log("clicked", e.target.dataset.taskid);
       const nodeToReplace = document.getElementById(generateTaskItemId(e.target.dataset.taskid));
       const task = todos.getTaskById(parseInt(e.target.dataset.taskid));
       taskFormComponent(parent, nodeToReplace, todos, taskSubset, null, task);
