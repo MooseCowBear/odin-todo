@@ -51,8 +51,8 @@ export const Task = (id, description, projectId, priority, date, time, category,
       description: description,
       projectId: projectId,
       priority: priority,
-      date: date,
-      time: time,
+      date: schedulable.getDate(),
+      time: schedulable.getTime(),
       category: category
     };
   };
@@ -69,6 +69,6 @@ export const Task = (id, description, projectId, priority, date, time, category,
     setPriority,
     complete,
     updateStatus,
-    toJSON
+    toJSON,
   };
 };

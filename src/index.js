@@ -4,6 +4,7 @@ import { tasksComponent } from "./tasksComponent.js";
 import { Todo } from "./todo.js";
 
 (function () {
+
   const data = localStorage.getItem('todos');
   const todos = Todo();
 

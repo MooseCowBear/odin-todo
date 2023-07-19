@@ -45,7 +45,7 @@ export function createTaskGroup(parent, groupTitle) {
   return groupDiv;
 }
 
-export function createTaskItem(parent, todos, task, includeDate = false) { 
+export function createTaskItem(parent, todos, task, includeDate = false, onTasksPage = true) { 
   const itemDiv = addElement('div', parent, ['item', task.getPriority()], null, {id: generateTaskItemId(task.getId())});
   const lbl = addElement('label', itemDiv, []);
   const check = addElement('input', lbl, [], null, {type: 'checkbox'});
@@ -73,7 +73,7 @@ export function createTaskItem(parent, todos, task, includeDate = false) {
   const labelContent = addElement('span', wrapper, ['label-content']);
   addElement('span', labelContent, [], task.getDescription());
 
-  if (task.getProjectId() > 0) {
+  if (task.getProjectId() > 0 && onTasksPage) {
     addElement('span', labelContent, ['project-title'], todos.getProjectById(task.getProjectId()).getTitle());
   }
 

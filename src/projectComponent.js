@@ -30,7 +30,7 @@ export function projectComponent(todos, projectId, parent) {
     const sortedTasks = orderByDate(tasks.filter(elem => elem.getCategory() === cat));
 
     for (const t of sortedTasks) {
-      createTaskItem(group, todos, t, true); 
+      createTaskItem(group, todos, t, true, false); 
     }
   }
   addButtonListeners(parent, todos, projectId);

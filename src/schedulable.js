@@ -43,9 +43,9 @@ export const Schedulable = (date, time) => {
     getDateAsDate,
     dateFormatted,
     timeFormatted,
-    setDate,
     setTime,
     getTime,
-    getDate
+    getDate,
+    setDate
   };
 }

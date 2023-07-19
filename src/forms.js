@@ -121,7 +121,8 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
         timeField.value,
         categoryField.value
       );
-      
+      updateStorage(todos);
+
       if (taskSubset) {
         tasksComponent(todos, taskSubset, parent);
       }
@@ -138,6 +139,7 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
         timeField.value,
         categoryField.value
       );
+      updateStorage(todos);
 
       const noTaskMessage = document.getElementById('no-task-message');
       if (noTaskMessage) {
@@ -151,7 +153,6 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
         projectComponent(todos, projectID, parent);
       }
     }
-    updateStorage(todos);
   });
 
   cancel.addEventListener("click", () => {

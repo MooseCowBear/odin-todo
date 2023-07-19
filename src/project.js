@@ -38,8 +38,8 @@ export const Project = (id, title, description, date, time, category) => {
       id: id,
       title: title,
       description: description,
-      date: date,
-      time: time,
+      date: schedulable.getDate(),
+      time: schedulable.getTime(),
       category: category,
     };
   };
