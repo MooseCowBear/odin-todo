@@ -185,11 +185,14 @@ button:not(:disabled) {
   font-weight: 700;
   font-size: 1.2rem;
   color: var(--accent);
-  height: 2rem;
   display: flex;
   align-items: center;
   gap: 0.3rem;
   white-space: nowrap;
+}
+
+.new-buttons-div img {
+  height: 1.5rem;
 }
 
 .project-header {
