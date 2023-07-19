@@ -1,60 +1,41 @@
 import { orderByDate, sameDay, getDivTitle, generateTaskItemId } from "./viewHelpers.js";
-import { createTaskGroup, createTaskItem, addNewFormBtns } from "./subcomponents.js";
+import { createTaskGroup, createTaskItem, addNewFormBtns, addElement } from "./subcomponents.js";
 import { projectFormComponent, taskFormComponent } from "./forms.js";
 
 export function tasksComponent(todos, taskSubset, parent) {
   parent.textContent = "";
 
-  const tasks = todos[`get${taskSubset}Tasks`]();
-
-  const component = document.createElement('div');
-  component.classList.add('component');
-
-  const title = document.createElement('h1');
-  title.textContent = taskSubset === "Today" ? "Tasks" : taskSubset;
-
-  component.appendChild(title);
-
-  const newFormDiv = document.createElement('div'); //where new form will go on page if button is pressed
-  newFormDiv.id = "form";
-  component.appendChild(newFormDiv); 
-
   addNewFormBtns(parent);
 
+  const tasks = todos[`get${taskSubset}Tasks`]();
+
+  const component = addElement('div', parent, ['component']);
+  addElement('h1', component, [], (taskSubset === "Today" ? "Tasks" : taskSubset));
+
+  addElement('div', component, [], null, {id: 'form'});
+
   if (tasks.length === 0) {
-    const message = document.createElement('p');
-    message.id ="no-tasks-message";
-    message.textContent = "No tasks";
-    component.appendChild(message);
-    parent.appendChild(component);
+    addElement('p', component, [], "No tasks", {id: 'no-tasks-message'});
     return;
   }
 
   const sortedTasks = orderByDate(tasks);
 
-  const tasksDiv = document.createElement('div');
-  tasksDiv.classList.add('main-content');
+  const tasksDiv = addElement('div', component, ['main-content']);
 
   let currDate = sortedTasks[0].getDateAsDate();
-  let currDiv = createTaskGroup(tasksDiv, getDivTitle(currDate)); //FOR UPDATE
+  let currDiv = createTaskGroup(tasksDiv, getDivTitle(currDate)); 
 
   for (const t of sortedTasks) {
-
     if (sameDay(t.getDateAsDate(), currDate)) {
-      createTaskItem(currDiv, todos, t); //NEEDS PARENT
+      createTaskItem(currDiv, todos, t); 
     }
     else {
-      //create a new group, then create task item to attach to it. 
       currDate = t.getDateAsDate();
       currDiv = createTaskGroup(tasksDiv, getDivTitle(currDate));
-      //and then append, taskItem to the new group
       createTaskItem(currDiv, todos, t);
     }
   }
-  //tasksDiv.appendChild(currDiv); //append whatever the last one was FOR UPDATE REMOVE
-  component.appendChild(tasksDiv);
-  parent.appendChild(component);
-
   addButtonListeners(parent, todos, taskSubset);
 }
 
