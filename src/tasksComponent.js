@@ -39,7 +39,7 @@ export function tasksComponent(todos, taskSubset, parent) {
     }
   }
   addButtonListeners(parent, todos, taskSubset);
-  
+
   if (taskSubset === 'Completed') {
     const clearCompleted = addElement('button', title, ['clear-deleted'], 'delete all');
     clearCompleted.addEventListener("click", () => {
@@ -68,7 +68,6 @@ function addButtonListeners(parent, todos, taskSubset) {
   const editBtns = document.querySelectorAll('.edit-button');
   for (let i = 0; i < editBtns.length; i ++){
     editBtns[i].addEventListener("click", (e) => {
-      console.log("clicked", e.target.dataset.taskid);
       const nodeToReplace = document.getElementById(generateTaskItemId(e.target.dataset.taskid));
       const task = todos.getTaskById(parseInt(e.target.dataset.taskid));
       taskFormComponent(parent, nodeToReplace, todos, taskSubset, null, task);
