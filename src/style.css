@@ -63,8 +63,6 @@ a:not([class]) {
   --neutral-300: #264143;
   --accent: #e99f4c;
   --alert: #de5499;
-
-  
 }
 
 body {
@@ -79,7 +77,11 @@ body {
 
 h1 {
   font-size: 3rem;
-  line-height: 1;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 main {
@@ -250,7 +252,9 @@ input[type=checkbox] {
   margin: 1rem 0;
 }
 
-.form button, .edit-project {
+.form button, 
+.edit-project,
+.clear-deleted {
   width: max-content;
   text-transform: lowercase;
   border: none;
@@ -260,7 +264,9 @@ input[type=checkbox] {
 .form button:hover, 
 .form button:focus, 
 .edit-project:hover, 
-.edit-project:focus {
+.edit-project:focus,
+.clear-deleted:hover,
+.clear-deleted:focus {
   color: var(--alert);
 }
 

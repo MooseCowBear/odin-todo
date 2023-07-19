@@ -22,8 +22,6 @@ export const Todo = () => {
   };
 
   const createProject = (title, description, date, time, category, id = null) => {
-    console.log("in todo.createProject", title, description, date, time, category, id);
-
     const projectId = id || projectIdCounter;
     const p = Project(projectId, title, description, date, time, category);
     projects.push(p);
@@ -64,6 +62,10 @@ export const Todo = () => {
     task.setDate(date);
     task.setTime(time);
     task.setCategory(category);
+  };
+
+  const clearCompletedTasks = () => {
+    tasks = tasks.filter(elem => !elem.complete());
   };
 
   const getProjects = () => {
@@ -147,6 +149,7 @@ export const Todo = () => {
     deleteTask,
     updateProject,
     updateTask,
+    clearCompletedTasks,
     getProjects,
     getTasks,
     getTodayTasks,

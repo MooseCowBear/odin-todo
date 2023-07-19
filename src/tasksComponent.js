@@ -1,16 +1,28 @@
 import { orderByDate, sameDay, getDivTitle, generateTaskItemId } from "./viewHelpers.js";
 import { createTaskGroup, createTaskItem, addNewFormBtns, addElement } from "./subcomponents.js";
 import { projectFormComponent, taskFormComponent } from "./forms.js";
+import { updateStorage } from "./storage.js";
 
 export function tasksComponent(todos, taskSubset, parent) {
   parent.textContent = "";
 
   addNewFormBtns(parent);
+  addButtonListeners(parent, todos, taskSubset);
 
   const tasks = todos[`get${taskSubset}Tasks`]();
 
   const component = addElement('div', parent, ['component']);
-  addElement('h1', component, [], (taskSubset === "Today" ? "Tasks" : taskSubset));
+  const title = addElement('h1', component, [], (taskSubset === "Today" ? "Tasks" : taskSubset));
+
+  if (taskSubset === 'Completed') {
+    const clearCompleted = addElement('button', title, ['clear-deleted'], 'delete all');
+    clearCompleted.addEventListener("click", () => {
+      todos.clearCompletedTasks();
+      updateStorage(todos);
+
+      tasksComponent(todos, 'Completed', parent);
+    });
+  }
 
   addElement('div', component, [], null, {id: 'form'});
 
@@ -36,7 +48,6 @@ export function tasksComponent(todos, taskSubset, parent) {
       createTaskItem(currDiv, todos, t);
     }
   }
-  addButtonListeners(parent, todos, taskSubset);
 }
 
 function addButtonListeners(parent, todos, taskSubset) {
