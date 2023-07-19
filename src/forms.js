@@ -147,7 +147,7 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
       }
 
       if (taskSubset) {
-        tasksComponent(todos, taskSubset, parent);
+        tasksComponent(todos, 'All', parent);
       }
       else {
         projectComponent(todos, projectID, parent);
