@@ -1,10 +1,8 @@
 import { Schedulable } from "./schedulable.js";
 
-export const Task = (id, description, projectId, priority, date, time, category = "misc") => {
+export const Task = (id, description, projectId, priority, date, time, category, completed = false) => {
   const schedulable = Schedulable(date, time);
   category = category.trim().toLowerCase();
-
-  let completed = false;
 
   const getId = () => {
     return id;
@@ -46,6 +44,19 @@ export const Task = (id, description, projectId, priority, date, time, category 
     completed = !completed;
   };
 
+  const toJSON = () => {
+    return {
+      completed: completed,
+      id: id,
+      description: description,
+      projectId: projectId,
+      priority: priority,
+      date: date,
+      time: time,
+      category: category
+    };
+  };
+
   return {
     ...schedulable,
     getId,
@@ -57,6 +68,7 @@ export const Task = (id, description, projectId, priority, date, time, category 
     getPriority,
     setPriority,
     complete,
-    updateStatus
+    updateStatus,
+    toJSON
   };
 };

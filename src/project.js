@@ -1,6 +1,8 @@
 import { Schedulable } from "./schedulable.js";
 
 export const Project = (id, title, description, date, time, category) => {
+  console.log("in project", title, description, date, time, category, id);
+
   const schedulable = Schedulable(date, time);
   title = title.trim().toLowerCase();
   category = category.trim().toLowerCase();
@@ -33,6 +35,17 @@ export const Project = (id, title, description, date, time, category) => {
     category = newCategory.trim().toLowerCase();
   };
 
+  const toJSON = () => {
+    return {
+      id: id,
+      title: title,
+      description: description,
+      date: date,
+      time: time,
+      category: category,
+    };
+  };
+
   return {
     ...schedulable,
     getId,
@@ -41,6 +54,7 @@ export const Project = (id, title, description, date, time, category) => {
     getDescription,
     setDescription,
     getCategory,
-    setCategory
+    setCategory,
+    toJSON
   };
 };

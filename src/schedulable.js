@@ -23,8 +23,6 @@ export const Schedulable = (date, time) => {
     return `${hour}${min} ${m}`;
   };
 
-  //also need set date, time for editing
-
   const setDate = (newDate) => {
     date = newDate;
   };

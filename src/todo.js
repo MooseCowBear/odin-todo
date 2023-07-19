@@ -21,18 +21,22 @@ export const Todo = () => {
     return t[0];
   };
 
-  const createProject = (title, description, date, time, category) => {
-    const p = Project(projectIdCounter, title, description, date, time, category);
+  const createProject = (title, description, date, time, category, id = null) => {
+    console.log("in todo.createProject", title, description, date, time, category, id);
+
+    const projectId = id || projectIdCounter;
+    const p = Project(projectId, title, description, date, time, category);
     projects.push(p);
-    projectIdCounter++;
+    projectIdCounter = id ? projectIdCounter : projectIdCounter + 1;
+
     return p.getId();
   };
 
-  const createTask = (description, projectId, priority, date, time, category) => {
-
-    const t = Task(taskIdCounter, description, parseInt(projectId), priority, date, time, category);
+  const createTask = (description, projectId, priority, date, time, category, id = null, completed = false) => {
+    const taskId = id || taskIdCounter;
+    const t = Task(taskId, description, parseInt(projectId), priority, date, time, category, completed);
     tasks.push(t);
-    taskIdCounter++;
+    taskIdCounter = id ? taskIdCounter : taskIdCounter + 1;
   };
 
   const deleteProject = (id) => {
@@ -93,6 +97,47 @@ export const Todo = () => {
     return tasks.filter(elem => elem.getProjectId() === id && !elem.complete());
   };
 
+  const toJSON = () => {
+    return {
+      projectIdCounter: projectIdCounter,
+      taskIdCounter: taskIdCounter,
+      projects: JSON.stringify(projects),
+      tasks: JSON.stringify(tasks)
+    }
+  };
+
+  const fromJson = (json) => {
+    const todos = JSON.parse(json);
+    projectIdCounter = todos.projectIdCounter;
+    taskIdCounter = todos.taskIdCounter;
+
+    const projectsArr = JSON.parse(todos.projects);
+    const tasksArr = JSON.parse(todos.tasks);
+
+    for (const elem of projectsArr) {
+      createProject(
+        elem.title, 
+        elem.description, 
+        elem.date, 
+        elem.time, 
+        elem.category, 
+        elem.id
+      );
+    }
+    for (const elem of tasksArr) {
+      createTask(
+        elem.description, 
+        elem.projectId, 
+        elem.priority, 
+        elem.date, 
+        elem.time, 
+        elem.category, 
+        elem.id,
+        elem.completed
+      );
+    }
+  }
+
   return {
     getProjectById,
     getTaskById,
@@ -108,6 +153,8 @@ export const Todo = () => {
     getAllTasks,
     getUpcomingTasks,
     getCompletedTasks,
-    getTasksByProjectId
+    getTasksByProjectId,
+    toJSON,
+    fromJson
   };
 }

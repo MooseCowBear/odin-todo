@@ -2,6 +2,7 @@ import { projectComponent } from "./projectComponent.js";
 import { tasksComponent } from "./tasksComponent.js";
 import { navComponent } from "./nav.js";
 import { addElement } from "./subcomponents.js";
+import { updateStorage } from "./storage.js";
 
 export function projectFormComponent(parent, nodeToReplace, todos, project = null) {
   const component = addFormComponent(nodeToReplace);
@@ -19,12 +20,13 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
   const cancel = addElement('button', buttonsDiv, [], 'Cancel');
 
   if (project) {
-    const deleteBtn = addElement('button', buttonsDiv, ['delete-btn'], 'Delete Task');
+    const deleteBtn = addElement('button', buttonsDiv, ['delete-btn'], 'Delete Project');
 
     deleteBtn.addEventListener("click", () => {
       todos.deleteProject(project.getId());
       tasksComponent(todos, "All", parent); //want to go to "home" + also need to redraw nav!
       navComponent(todos, document.querySelector('header'));
+      updateStorage(todos);
     });
   }
 
@@ -56,6 +58,7 @@ export function projectFormComponent(parent, nodeToReplace, todos, project = nul
     }
     //redraw nav, bc might have changed title even if just update
     navComponent(todos, document.querySelector('header'));
+    updateStorage(todos);
   });
 
   cancel.addEventListener("click", () => {
@@ -100,6 +103,7 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
       else {
         projectComponent(todos, projectID, parent);
       }
+      updateStorage(todos);
     });
   }
 
@@ -147,6 +151,7 @@ export function taskFormComponent(parent, nodeToReplace, todos, taskSubset, proj
         projectComponent(todos, projectID, parent);
       }
     }
+    updateStorage(todos);
   });
 
   cancel.addEventListener("click", () => {

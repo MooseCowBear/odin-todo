@@ -1,4 +1,5 @@
 import { generateTaskItemId } from "./viewHelpers.js";
+import { updateStorage } from "./storage.js";
 import Plus from "./plus.svg";
 import Info from "./information-outline.svg";
 
@@ -51,19 +52,22 @@ export function createTaskItem(parent, todos, task, includeDate = false) {
 
   if (task.complete()) {
     check.checked = true;
+    check.disabled = true;
   }
+  else {
+    check.addEventListener('change', (e) => {
+      task.updateStatus();
+      updateStorage(todos);
 
-  check.addEventListener('change', (e) => {
-    task.updateStatus();
-
-    if (e.target.checked) {
-      const pageTitle = document.querySelector('h1');
-      if (pageTitle.textContent !== "Completed") {
-        const ancestorItem = e.target.closest(".item");
-        ancestorItem.classList.add("fade-out");
+      if (e.target.checked) {
+        const pageTitle = document.querySelector('h1');
+        if (pageTitle.textContent !== "Completed") {
+          const ancestorItem = e.target.closest(".item");
+          ancestorItem.classList.add("fade-out");
+        }
       }
-    }
-  });
+    });
+  }
 
   const wrapper = addElement('div', lbl, ['item-content']);
   const labelContent = addElement('span', wrapper, ['label-content']);
@@ -84,6 +88,9 @@ export function createTaskItem(parent, todos, task, includeDate = false) {
 
   const edit = addElement('button', wrapper, ['edit-button'], null, {"data-taskId": task.getId()});
   addImage(Info, edit, ['icon'], {"data-taskId": task.getId()});
+  if (task.complete()) {
+    edit.disabled = true;
+  }
 
   if (task.getPriority() === 'high') {
     addElement('p', wrapper, [], "!");
