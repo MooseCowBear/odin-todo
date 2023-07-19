@@ -6,88 +6,44 @@ import Alarm from "./alarm.svg";
 import Calendar from "./calendar-month.svg";
 import Check from "./check-circle.svg";
 import Circle from "./circle.svg";
+import { addElement, addImage } from "./subcomponents.js";
 
 export function navComponent(todos, parent) {
-  //draws buttons to task views: today, upcoming, anytime, complete
   parent.textContent = ""
-  const component = document.createElement('nav');
-  component.classList.add('nav');
 
-  //need a hambuger for the mobile layout...
-
-  const tasksDiv = document.createElement('div');
-  const tasksTitle = document.createElement('h2');
-  tasksTitle.textContent = "Tasks";
-  tasksDiv.appendChild(tasksTitle);
+  const component = addElement('nav', parent, ['nav']);
+  const tasksDiv = addElement('div', component, []);
+  addElement('h2', tasksDiv, [], "Tasks");
 
   const buttons = ['All', 'Today', 'Upcoming', 'Completed'];
-  const all = new Image();
-  all.src = List;
-  all.classList.add("icon");
-  const today = new Image();
-  today.src = Alarm;
-  today.classList.add("icon");
-  const up = new Image();
-  up.src = Calendar;
-  up.classList.add("icon");
-  const comp = new Image();
-  comp.src = Check;
-  comp.classList.add("icon");
-
-  const icons = [all, today, up, comp];
+  const icons = [List, Alarm, Calendar, Check];
 
   for (let i = 0; i < buttons.length; i ++) {
-    const buttonWrapper = document.createElement('div');
-    buttonWrapper.classList.add("nav-button-wrapper");
-    buttonWrapper.appendChild(icons[i]);
-    const btn = document.createElement('button');
-    btn.textContent = buttons[i];
-    buttonWrapper.appendChild(btn);
-    tasksDiv.appendChild(buttonWrapper);
+    const buttonWrapper = addElement('div', tasksDiv, ['nav-button-wrapper']);
+    addImage(icons[i], buttonWrapper, ['icon']);
+    addElement('button', buttonWrapper, [], buttons[i]);
   }
 
   addTaskListener(tasksDiv, todos);
-  component.appendChild(tasksDiv);
 
-  const projectsDiv = document.createElement('div');
-  const projectsDivTitle = document.createElement('h2');
-  projectsDivTitle.textContent = "Projects";
-  projectsDiv.appendChild(projectsDivTitle);
+  const projectsDiv = addElement('div', component, []);
+  addElement('h2', projectsDiv, [], 'Projects');
 
   const projects = todos.getProjects();
 
   for (const cat of getCategories(projects)) {
-    const projectDiv = document.createElement('div');
-    projectDiv.classList.add('project-div');
-
-    const title = document.createElement('h3');
-    title.textContent = cat;
-    projectDiv.appendChild(title);
+    const projectDiv = addElement('div', projectsDiv, ['project-div']);
+    addElement('h3', projectDiv, [], cat);
 
     const sortedProjects = orderByDate(projects.filter(elem => elem.getCategory() === cat));
 
     for (const p of sortedProjects) { 
-      const buttonWrapper = document.createElement('div');
-      buttonWrapper.classList.add("nav-button-wrapper");
-      const circleIcon = new Image();
-      circleIcon.src = Circle;
-      circleIcon.classList.add("small-icon");
-      buttonWrapper.appendChild(circleIcon);
-      const projectItem = document.createElement('button');
-      projectItem.classList.add("project-item");
-      projectItem.textContent = p.getTitle();
-      projectItem.dataset.id = `${p.getId()}`;
-      buttonWrapper.appendChild(projectItem);
-      projectDiv.appendChild(buttonWrapper);
+      const buttonWrapper = addElement('div', projectDiv, ['nav-button-wrapper'])
+      addImage(Circle, buttonWrapper, ['small-icon']);
+      addElement('button', buttonWrapper, ['project-item'], p.getTitle(), {"data-id": p.getId()})
     }
-    projectsDiv.appendChild(projectDiv);
   }
-
   addProjectListener(projectsDiv, todos);
-  component.appendChild(projectsDiv);
-
-  //draws each category of project, with projects from that category listed (in order of date)
-  parent.appendChild(component);
 }
 
 function addTaskListener(buttonDiv, todos) {
@@ -104,7 +60,7 @@ function addProjectListener(buttonDiv, todos) {
   buttonDiv.addEventListener("click", (e) => {
     if (e.target.tagName.toLowerCase() === 'button') {
       const content = document.getElementById('content');
-      
+
       projectComponent(todos, parseInt(e.target.dataset.id), content);
     }
   });
