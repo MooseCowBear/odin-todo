@@ -36,26 +36,22 @@ export function tasksComponent(todos, taskSubset, parent) {
   tasksDiv.classList.add('main-content');
 
   let currDate = sortedTasks[0].getDateAsDate();
-  let currDiv = createTaskGroup(getDivTitle(currDate));
+  let currDiv = createTaskGroup(tasksDiv, getDivTitle(currDate)); //FOR UPDATE
 
   for (const t of sortedTasks) {
-    const taskItem = createTaskItem(todos, t); 
 
     if (sameDay(t.getDateAsDate(), currDate)) {
-      //append to the current div
-      currDiv.appendChild(taskItem);
+      createTaskItem(currDiv, todos, t); //NEEDS PARENT
     }
     else {
-      //done with that group
-      tasksDiv.appendChild(currDiv);
-      //create a new group
+      //create a new group, then create task item to attach to it. 
       currDate = t.getDateAsDate();
-      currDiv = createTaskGroup(getDivTitle(currDate));
+      currDiv = createTaskGroup(tasksDiv, getDivTitle(currDate));
       //and then append, taskItem to the new group
-      currDiv.appendChild(taskItem);
+      createTaskItem(currDiv, todos, t);
     }
   }
-  tasksDiv.appendChild(currDiv); //append whatever the last one was
+  //tasksDiv.appendChild(currDiv); //append whatever the last one was FOR UPDATE REMOVE
   component.appendChild(tasksDiv);
   parent.appendChild(component);
 
@@ -79,8 +75,8 @@ function addButtonListeners(parent, todos, taskSubset) {
   const editBtns = document.querySelectorAll('.edit-button');
   for (let i = 0; i < editBtns.length; i ++){
     editBtns[i].addEventListener("click", (e) => {
-      const nodeToReplace = document.getElementById(generateTaskItemId(e.target.dataset.taskId));
-      const task = todos.getTaskById(parseInt(e.target.dataset.taskId));
+      const nodeToReplace = document.getElementById(generateTaskItemId(e.target.dataset.taskid));
+      const task = todos.getTaskById(parseInt(e.target.dataset.taskid));
       taskFormComponent(parent, nodeToReplace, todos, taskSubset, null, task);
     });
   }

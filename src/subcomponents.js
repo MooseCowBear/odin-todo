@@ -2,24 +2,57 @@ import { generateTaskItemId } from "./viewHelpers.js";
 import Plus from "./plus.svg";
 import Info from "./information-outline.svg";
 
-export function createTaskGroup(groupTitle) {
-  const groupDiv = document.createElement('div');
-  const title = document.createElement('h2');
-  title.textContent = groupTitle;
-  groupDiv.appendChild(title);
-  groupDiv.classList.add('task-group');
+export function addElement(type, parent, classes, textContent = null, options = {}){
+  const elem = document.createElement(type);
+  parent.appendChild(elem);
+  elem.classList.add(...classes);
+
+  if (textContent) elem.textContent = textContent; 
+
+  for (const o in options) {
+    elem.setAttribute(o, options[o]);
+  }
+  return elem;
+};
+
+export function addImage(src, parent, classes = [], options = {}) {
+  const image = new Image();
+  image.src = src;
+  image.classList.add(...classes);
+  parent.appendChild(image);
+
+  for (const o in options) {
+    image.setAttribute(o, options[o]);
+  }
+}
+
+//all option keys with data-whatever must be strings because of the hypens! chars only can be symbols
+
+export function addNewFormBtns(parent) {
+  const newFormBtnsDiv = addElement('div', parent, ['new-buttons-div']);
+  const newProject = addElement('button', newFormBtnsDiv, [], null, {id: "new-project"});
+  addImage(Plus, newProject);
+  addElement('p', newProject, [], "New Project");
+
+  const newTask = addElement('button', newFormBtnsDiv, [], null, {id: "new-task"});
+  addImage(Plus, newTask);
+  addElement('p', newTask, [], "New Task");
+
+  console.log(newFormBtnsDiv);
+}
+
+export function createTaskGroup(parent, groupTitle) {
+  const groupDiv = addElement('div', parent, ['task-group']);
+  addElement('h2', groupDiv, [], groupTitle);
 
   return groupDiv;
 }
 
-export function createTaskItem(todos, task, includeDate = false) {
-  const itemDiv = document.createElement('div');
-  itemDiv.classList.add('item');
-  itemDiv.id = generateTaskItemId(task.getId());
-
-  const lbl = document.createElement('label');
-  const check = document.createElement('input');
-  check.type = 'checkbox'; 
+//needs to take parent elem as arg!
+export function createTaskItem(parent, todos, task, includeDate = false) { 
+  const itemDiv = addElement('div', parent, ['item', task.getPriority()], null, {id: generateTaskItemId(task.getId())});
+  const lbl = addElement('label', itemDiv, []);
+  const check = addElement('input', lbl, [], null, {type: 'checkbox'});
 
   if (task.complete()) {
     check.checked = true;
@@ -37,98 +70,28 @@ export function createTaskItem(todos, task, includeDate = false) {
     }
   });
 
-  lbl.appendChild(check);
-
-  const wrapper = document.createElement('div');
-  wrapper.classList.add("item-content");
-
-  const labelContent = document.createElement('span');
-  labelContent.classList.add("label-content");
-  const description = document.createElement('span');
-
-  description.textContent = task.getDescription();
-  labelContent.appendChild(description);
+  const wrapper = addElement('div', lbl, ['item-content']);
+  const labelContent = addElement('span', wrapper, ['label-content']);
+  addElement('span', labelContent, [], task.getDescription());
 
   if (task.getProjectId() > 0) {
-    const projectTitle = document.createElement('span');
-    projectTitle.textContent = todos.getProjectById(task.getProjectId()).getTitle();
-    projectTitle.classList.add('project-title');
-    labelContent.appendChild(projectTitle);
+    addElement('span', labelContent, ['project-title'], todos.getProjectById(task.getProjectId()).getTitle());
   }
-
-  wrapper.appendChild(labelContent);
 
   if (task.timeFormatted() !== "") {
-    const time = document.createElement('div');
-    time.classList.add("datetime-display");
+    const time = addElement('div', wrapper, ['datetime-display']);
 
     if (includeDate) {
-      const dateContent = document.createElement('span');
-      dateContent.textContent = task.dateFormatted();
-      time.appendChild(dateContent);
+      addElement('span', time, [], task.dateFormatted());
     }
-
-    const timeContent = document.createElement('span');
-    timeContent.textContent = task.timeFormatted(); 
-    time.appendChild(timeContent);
-
-    wrapper.appendChild(time);
+    addElement('span', time, [], task.timeFormatted());
   }
 
-  const edit = document.createElement('button');
-  edit.classList.add("edit-button");
-  edit.dataset.taskId = `${task.getId()}`; //to be used in event listener that updates task
-
-  const editIcon = new Image();
-  editIcon.src = Info;
-  editIcon.classList.add("icon");
-  editIcon.dataset.taskId = `${task.getId()}`;
-  edit.appendChild(editIcon);
-  
-  wrapper.appendChild(edit);
+  const edit = addElement('button', wrapper, ['edit-button'], null, {"data-taskId": task.getId()});
+  addImage(Info, edit, ['icon'], {"data-taskId": task.getId()});
 
   if (task.getPriority() === 'high') {
-    const priorty = document.createElement('p'); //change to icon?
-    priorty.textContent = "!";
-    wrapper.appendChild(priorty);
+    addElement('p', wrapper, [], "!");
   }
-
-  lbl.appendChild(wrapper);
-
-  itemDiv.classList.add(task.getPriority());
-
-  itemDiv.appendChild(lbl);
-
   return itemDiv;
-}
-
-export function addNewFormBtns(parent) {
-  const newFormBtnsDiv = document.createElement('div');
-  newFormBtnsDiv.classList.add('new-buttons-div');
-
-  const plusIcon1 = new Image();
-  plusIcon1.src = Plus;
-
-  const newProject = document.createElement('button');
-  newProject.id = "new-project";
-  newProject.appendChild(plusIcon1);
-  const pcopy = document.createElement('p');
-  pcopy.textContent = "New Project";
-  newProject.appendChild(pcopy);
-
-  newFormBtnsDiv.appendChild(newProject);
-
-  const plusIcon2 = new Image();
-  plusIcon2.src = Plus;
-
-  const newTask = document.createElement('button');
-  newTask.id = "new-task"; 
-  newTask.appendChild(plusIcon2);
-  const taskcopy = document.createElement('p');
-  taskcopy.textContent = "New Task";
-  newTask.appendChild(taskcopy);
-  
-  newFormBtnsDiv.appendChild(newTask);
-
-  parent.appendChild(newFormBtnsDiv);
 }

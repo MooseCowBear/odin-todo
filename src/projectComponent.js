@@ -47,15 +47,14 @@ export function projectComponent(todos, projectId, parent) {
 
   for (const cat of getCategories(tasks)) { 
     //create task group 
-    const group = createTaskGroup(cat);
+    const group = createTaskGroup(projectDiv, cat); 
     //now list the tasks for each category
     const sortedTasks = orderByDate(tasks.filter(elem => elem.getCategory() === cat));
 
     for (const t of sortedTasks) {
-      const item = createTaskItem(todos, t, true);
-      group.appendChild(item);
+      const item = createTaskItem(group, todos, t, true); 
     }
-    projectDiv.appendChild(group);
+
   }
   component.appendChild(projectDiv);
   parent.appendChild(component);
