@@ -2,6 +2,7 @@ import { Schedulable } from "./schedulable.js";
 
 export const Task = (id, description, projectId, priority, date, time, category = "misc") => {
   const schedulable = Schedulable(date, time);
+  category = category.trim().toLowerCase();
 
   let completed = false;
 

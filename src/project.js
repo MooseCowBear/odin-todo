@@ -2,6 +2,8 @@ import { Schedulable } from "./schedulable.js";
 
 export const Project = (id, title, description, date, time, category) => {
   const schedulable = Schedulable(date, time);
+  title = title.trim().toLowerCase();
+  category = category.trim().toLowerCase();
 
   const getId = () => {
     return id;
