@@ -1,64 +1,38 @@
 import { orderByDate, getCategories, generateTaskItemId } from "./viewHelpers.js";
-import { createTaskGroup, createTaskItem, addNewFormBtns } from "./subcomponents.js";
+import { createTaskGroup, createTaskItem, addNewFormBtns, addElement } from "./subcomponents.js";
 import { projectFormComponent, taskFormComponent } from "./forms.js";
 
 
 export function projectComponent(todos, projectId, parent) {
   parent.textContent = "";
 
-  const component = document.createElement('div');
-  component.classList.add('component');
-  const header = document.createElement('div');
-  header.classList.add('project-header');
-
-  const title = document.createElement('h1');
-  title.textContent = todos.getProjectById(projectId).getTitle();
-  header.appendChild(title);
-
-  const dateDisplay = document.createElement('p');
-  dateDisplay.textContent = todos.getProjectById(projectId).dateFormatted();
-  header.appendChild(dateDisplay);
-
-  const projectEdit = document.createElement('button');
-  projectEdit.id = "edit-project";
-  projectEdit.classList.add("edit-project");
-  projectEdit.textContent = 'Edit'; 
-  header.appendChild(projectEdit);
-
-  component.appendChild(header);
-
-  const d = todos.getProjectById(projectId).getDescription();
-  if (d !== "") {
-    const descriptDisplay = document.createElement('p');
-    descriptDisplay.textContent = d;
-    component.appendChild(descriptDisplay);
-  }
-
-  const newFormDiv = document.createElement('div'); //where new form will go on page if button is pressed
-  newFormDiv.id = "form";
-  component.appendChild(newFormDiv); 
-
   addNewFormBtns(parent);
 
-  const projectDiv = document.createElement('div');
-  projectDiv.classList.add('main-content');
+  const component = addElement('div', parent, ['component']);
+  const header = addElement('div', component, ['project-header']);
+  addElement('h1', header, [], todos.getProjectById(projectId).getTitle());
+  addElement('p', header, [], todos.getProjectById(projectId).dateFormatted());
+  addElement('button', header, ['edit-project'], 'Edit', {id: 'edit-project'});
+
+  const description = todos.getProjectById(projectId).getDescription();
+  if (description !== "") {
+    addElement('p', component, [], description);
+  }
+
+  addElement('div', component, [], null, {id: 'form'}); 
+
+  const projectDiv = addElement('div', component, ['main-content']);
 
   const tasks = todos.getTasksByProjectId(projectId); //this is both completed and not
 
   for (const cat of getCategories(tasks)) { 
-    //create task group 
     const group = createTaskGroup(projectDiv, cat); 
-    //now list the tasks for each category
     const sortedTasks = orderByDate(tasks.filter(elem => elem.getCategory() === cat));
 
     for (const t of sortedTasks) {
-      const item = createTaskItem(group, todos, t, true); 
+      createTaskItem(group, todos, t, true); 
     }
-
   }
-  component.appendChild(projectDiv);
-  parent.appendChild(component);
-
   addButtonListeners(parent, todos, projectId);
 }
 
