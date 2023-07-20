@@ -1,11 +1,11 @@
 import { orderByDate, getCategories } from "./viewHelpers.js";
 import { tasksComponent } from "./tasksComponent.js";
 import { projectComponent } from "./projectComponent.js";
-import List from "./format-list-bulleted.svg";
-import Alarm from "./alarm.svg";
-import Calendar from "./calendar-month.svg";
-import Check from "./check-circle.svg";
-import Circle from "./circle.svg";
+import List from "./images/format-list-bulleted.svg";
+import Alarm from "./images/alarm.svg";
+import Calendar from "./images/calendar-month.svg";
+import Check from "./images/check-circle.svg";
+import Circle from "./images/circle.svg";
 import { addElement, addImage } from "./subcomponents.js";
 
 export function navComponent(todos, parent) {

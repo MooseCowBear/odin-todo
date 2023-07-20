@@ -28,7 +28,6 @@ export function getCategories(arr) {
   return [...new Set(categories)].sort();
 }
 
-//right now passing tasks.. but really want to pass dates or nil
 export function sameDay(one, two) { 
   if (!one && !two){
     return true;

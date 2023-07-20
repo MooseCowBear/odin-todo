@@ -1,7 +1,7 @@
 import { generateTaskItemId } from "./viewHelpers.js";
 import { updateStorage } from "./storage.js";
-import Plus from "./plus.svg";
-import Info from "./information-outline.svg";
+import Plus from "./images/plus.svg";
+import Info from "./images/information-outline.svg";
 
 export function addElement(type, parent, classes, textContent = null, options = {}){
   const elem = document.createElement(type);
