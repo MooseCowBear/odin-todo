@@ -394,6 +394,7 @@ select:focus + .focus {
 @media only screen and (max-width: 550px) {
   body {
     grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
   }
 
   main {
