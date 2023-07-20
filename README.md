@@ -14,4 +14,4 @@ Whatever your goals this implementation of the [Odin Project's](https://www.theo
 
 ## Screenshot
 
-[!alt text](./screenshots/todo_all.png "todo list default view")
+![alt text](./screenshots/todo_all.png "todo list default view")
