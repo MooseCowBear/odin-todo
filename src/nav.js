@@ -9,38 +9,44 @@ import Circle from "./images/circle.svg";
 import { addElement, addImage } from "./subcomponents.js";
 
 export function navComponent(todos, parent) {
-  parent.textContent = ""
+  parent.textContent = "";
 
-  const component = addElement('nav', parent, ['nav']);
-  const tasksDiv = addElement('div', component, []);
-  addElement('h2', tasksDiv, [], "Tasks");
+  const component = addElement("nav", parent, ["nav"]);
+  const tasksDiv = addElement("div", component, []);
+  addElement("h2", tasksDiv, [], "Tasks");
 
-  const buttons = ['All', 'Today', 'Upcoming', 'Completed'];
+  const buttons = ["All", "Today", "Upcoming", "Completed"];
   const icons = [List, Alarm, Calendar, Check];
 
-  for (let i = 0; i < buttons.length; i ++) {
-    const buttonWrapper = addElement('div', tasksDiv, ['nav-button-wrapper']);
-    addImage(icons[i], buttonWrapper, ['icon']);
-    addElement('button', buttonWrapper, [], buttons[i]);
+  for (let i = 0; i < buttons.length; i++) {
+    const buttonWrapper = addElement("div", tasksDiv, ["nav-button-wrapper"]);
+    addImage(icons[i], buttonWrapper, ["icon"]);
+    addElement("button", buttonWrapper, [], buttons[i]);
   }
 
   addTaskListener(tasksDiv, todos);
 
-  const projectsDiv = addElement('div', component, []);
-  addElement('h2', projectsDiv, [], 'Projects');
+  const projectsDiv = addElement("div", component, []);
+  addElement("h2", projectsDiv, [], "Projects");
 
   const projects = todos.getProjects();
 
   for (const cat of getCategories(projects)) {
-    const projectDiv = addElement('div', projectsDiv, ['project-div']);
-    addElement('h3', projectDiv, [], cat);
+    const projectDiv = addElement("div", projectsDiv, ["project-div"]);
+    addElement("h3", projectDiv, [], cat);
 
-    const sortedProjects = orderByDate(projects.filter(elem => elem.getCategory() === cat));
+    const sortedProjects = orderByDate(
+      projects.filter((elem) => elem.getCategory() === cat)
+    );
 
-    for (const p of sortedProjects) { 
-      const buttonWrapper = addElement('div', projectDiv, ['nav-button-wrapper'])
-      addImage(Circle, buttonWrapper, ['small-icon']);
-      addElement('button', buttonWrapper, ['project-item'], p.getTitle(), {"data-id": p.getId()})
+    for (const p of sortedProjects) {
+      const buttonWrapper = addElement("div", projectDiv, [
+        "nav-button-wrapper",
+      ]);
+      addImage(Circle, buttonWrapper, ["small-icon"]);
+      addElement("button", buttonWrapper, ["project-item"], p.getTitle(), {
+        "data-id": p.getId(),
+      });
     }
   }
   addProjectListener(projectsDiv, todos);
@@ -48,8 +54,8 @@ export function navComponent(todos, parent) {
 
 function addTaskListener(buttonDiv, todos) {
   buttonDiv.addEventListener("click", (e) => {
-    if (e.target.tagName.toLowerCase() === 'button') {
-      const content = document.getElementById('content');
+    if (e.target.tagName.toLowerCase() === "button") {
+      const content = document.getElementById("content");
 
       tasksComponent(todos, e.target.textContent, content);
     }
@@ -58,8 +64,8 @@ function addTaskListener(buttonDiv, todos) {
 
 function addProjectListener(buttonDiv, todos) {
   buttonDiv.addEventListener("click", (e) => {
-    if (e.target.tagName.toLowerCase() === 'button') {
-      const content = document.getElementById('content');
+    if (e.target.tagName.toLowerCase() === "button") {
+      const content = document.getElementById("content");
 
       projectComponent(todos, parseInt(e.target.dataset.id), content);
     }

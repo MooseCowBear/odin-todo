@@ -53,6 +53,6 @@ export const Project = (id, title, description, date, time, category) => {
     setDescription,
     getCategory,
     setCategory,
-    toJSON
+    toJSON,
   };
 };

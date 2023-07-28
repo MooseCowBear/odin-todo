@@ -33,11 +33,11 @@ export const Schedulable = (date, time) => {
 
   const getTime = () => {
     return time;
-  }
+  };
 
   const getDate = () => {
     return date;
-  }
+  };
 
   return {
     getDateAsDate,
@@ -46,6 +46,6 @@ export const Schedulable = (date, time) => {
     setTime,
     getTime,
     getDate,
-    setDate
+    setDate,
   };
-}
+};

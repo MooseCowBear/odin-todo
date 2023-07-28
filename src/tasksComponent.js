@@ -1,5 +1,15 @@
-import { orderByDate, sameDay, getDivTitle, generateTaskItemId } from "./viewHelpers.js";
-import { createTaskGroup, createTaskItem, addNewFormBtns, addElement } from "./subcomponents.js";
+import {
+  orderByDate,
+  sameDay,
+  getDivTitle,
+  generateTaskItemId,
+} from "./viewHelpers.js";
+import {
+  createTaskGroup,
+  createTaskItem,
+  addNewFormBtns,
+  addElement,
+} from "./subcomponents.js";
 import { projectFormComponent, taskFormComponent } from "./forms.js";
 import { updateStorage } from "./storage.js";
 
@@ -11,28 +21,32 @@ export function tasksComponent(todos, taskSubset, parent) {
 
   const tasks = todos[`get${taskSubset}Tasks`]();
 
-  const component = addElement('div', parent, ['component']);
-  const title = addElement('h1', component, [], (taskSubset === "Today" ? "Tasks" : taskSubset));
+  const component = addElement("div", parent, ["component"]);
+  const title = addElement(
+    "h1",
+    component,
+    [],
+    taskSubset === "Today" ? "Tasks" : taskSubset
+  );
 
-  addElement('div', component, [], null, {id: 'form'});
+  addElement("div", component, [], null, { id: "form" });
 
   if (tasks.length === 0) {
-    addElement('p', component, [], "No tasks", {id: 'no-tasks-message'});
+    addElement("p", component, [], "No tasks", { id: "no-tasks-message" });
     return;
   }
 
   const sortedTasks = orderByDate(tasks);
 
-  const tasksDiv = addElement('div', component, ['main-content']);
+  const tasksDiv = addElement("div", component, ["main-content"]);
 
   let currDate = sortedTasks[0].getDateAsDate();
-  let currDiv = createTaskGroup(tasksDiv, getDivTitle(currDate)); 
+  let currDiv = createTaskGroup(tasksDiv, getDivTitle(currDate));
 
   for (const t of sortedTasks) {
     if (sameDay(t.getDateAsDate(), currDate)) {
-      createTaskItem(currDiv, todos, t); 
-    }
-    else {
+      createTaskItem(currDiv, todos, t);
+    } else {
       currDate = t.getDateAsDate();
       currDiv = createTaskGroup(tasksDiv, getDivTitle(currDate));
       createTaskItem(currDiv, todos, t);
@@ -40,37 +54,44 @@ export function tasksComponent(todos, taskSubset, parent) {
   }
   addEditButtonListeners(parent, todos, taskSubset);
 
-  if (taskSubset === 'Completed') {
-    const clearCompleted = addElement('button', title, ['clear-deleted'], 'delete all');
+  if (taskSubset === "Completed") {
+    const clearCompleted = addElement(
+      "button",
+      title,
+      ["clear-deleted"],
+      "delete all"
+    );
     clearCompleted.addEventListener("click", () => {
-    todos.clearCompletedTasks();
+      todos.clearCompletedTasks();
       updateStorage(todos);
 
-      tasksComponent(todos, 'Completed', parent);
+      tasksComponent(todos, "Completed", parent);
     });
   }
 }
 
 function addNewButtonListeners(parent, todos, taskSubset) {
-  const newProject = document.getElementById('new-project');
-  const newTask = document.getElementById('new-task');
+  const newProject = document.getElementById("new-project");
+  const newTask = document.getElementById("new-task");
 
   newProject.addEventListener("click", () => {
-    const nodeToReplace = document.getElementById('form');
+    const nodeToReplace = document.getElementById("form");
     projectFormComponent(parent, nodeToReplace, todos);
   });
 
   newTask.addEventListener("click", () => {
-    const nodeToReplace = document.getElementById('form');
+    const nodeToReplace = document.getElementById("form");
     taskFormComponent(parent, nodeToReplace, todos, taskSubset, null);
   });
 }
 
 function addEditButtonListeners(parent, todos, taskSubset) {
-  const editBtns = document.querySelectorAll('.edit-button');
-  for (let i = 0; i < editBtns.length; i ++){
+  const editBtns = document.querySelectorAll(".edit-button");
+  for (let i = 0; i < editBtns.length; i++) {
     editBtns[i].addEventListener("click", (e) => {
-      const nodeToReplace = document.getElementById(generateTaskItemId(e.target.dataset.taskid));
+      const nodeToReplace = document.getElementById(
+        generateTaskItemId(e.target.dataset.taskid)
+      );
       const task = todos.getTaskById(parseInt(e.target.dataset.taskid));
       taskFormComponent(parent, nodeToReplace, todos, taskSubset, null, task);
     });
